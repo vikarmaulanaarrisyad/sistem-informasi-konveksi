@@ -16,15 +16,15 @@
                         Layanan</span></a>
             </li>
             <li class="menu-header">Data Master</li>
-            {{--  <li class="dropdown">
+            <li class="dropdown">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i>
                     <span>Produk</span></a>
                 <ul class="dropdown-menu">
-                    <li><a class="nav-link" href="#">Stok Produk</a></li>
-                    <li><a class="nav-link" href="#l">Kategori</a></li>
+                    <li><a class="nav-link" href="{{ route('kategori.index') }}">Kategori</a></li>
+                    {{--  <li><a class="nav-link" href="#">Stok Produk</a></li>  --}}
                 </ul>
             </li>
-            <li class="dropdown">
+            {{--  <li class="dropdown">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i>
                     <span>Pesanan</span></a>
                 <ul class="dropdown-menu">
