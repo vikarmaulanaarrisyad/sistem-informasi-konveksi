@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LayananController;
+use App\Http\Controllers\ProdukController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,5 +33,10 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Route : Kateogri
     Route::get('/kategori/data', [KategoriController::class, 'data'])->name('kategori.data');
+    Route::get('kategori/search', [KategoriController::class, 'search'])->name('kategori.search');
     Route::resource('/kategori', KategoriController::class);
+
+    // Route : Produk
+    Route::get('/produk/data', [ProdukController::class, 'data'])->name('produk.data');
+    Route::resource('/produk', ProdukController::class);
 });

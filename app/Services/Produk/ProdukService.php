@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Repositories\Kategori;
+namespace App\Services\Produk;
 
-use LaravelEasyRepository\Repository;
+use LaravelEasyRepository\BaseService;
 
-interface KategoriRepository extends Repository
+interface ProdukService extends BaseService
 {
     public function getData();
     public function store($data);
     public function show($id);
     public function update($data, $id);
     public function destroy($id);
-    public function findByName($data);
 }
