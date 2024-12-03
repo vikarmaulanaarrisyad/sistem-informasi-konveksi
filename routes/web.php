@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LayananController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,4 +29,8 @@ Route::group(['middleware' => ['auth']], function () {
     // Route : Layanan
     Route::get('/layanan/data', [LayananController::class, 'data'])->name('layanan.data');
     Route::resource('/layanan', LayananController::class)->except('create', 'edit');
+
+    // Route : Kateogri
+    Route::get('/kategori/data', [KategoriController::class, 'data'])->name('kategori.data');
+    Route::resource('/kategori', KategoriController::class);
 });

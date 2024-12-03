@@ -144,24 +144,16 @@ function format_uang(input) {
     input.value = formatted;
 }
 
-var url = window.location.pathname; // Ambil path URL saat ini
+var path = location.pathname.split("/");
+var url = location.origin + "/" + path[1];
 
-// STISLA - Sidebar menu handling with active class for <li> and <a> elements, including dropdowns
-$("ul.sidebar-menu a").each(function () {
-    var link = this.pathname; // Ambil path dari href
-
-    // Memeriksa apakah URL saat ini cocok dengan link
-    if (url == link || url.indexOf(link) === 0) {
-        $(this).addClass("active"); // Menambahkan kelas 'active' pada link yang cocok
-        $(this).closest("li").addClass("active"); // Menambahkan kelas 'active' pada <li> yang mengandung link
-
-        // Jika item tersebut berada di dalam dropdown, tampilkan dropdown
-        var dropdown = $(this).closest("li.dropdown");
-        if (dropdown.length) {
-            dropdown.addClass("active"); // Menandai dropdown sebagai aktif
-            dropdown.find(".dropdown-menu").addClass("show"); // Menampilkan dropdown menu
-        }
+$("ul.sidebar-menu li a").each(function () {
+    if ($(this).attr("href").indexOf(url) !== -1) {
+        $(this)
+            .parent()
+            .addClass("active")
+            .parent()
+            .parent("li")
+            .addClass("active");
     }
 });
-
-

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\Layanan;
+namespace App\Repositories\Kategori;
 
-use LaravelEasyRepository\BaseService;
+use LaravelEasyRepository\Repository;
 
-interface LayananService extends BaseService
+interface KategoriRepository extends Repository
 {
     public function getData();
     public function store($data);
