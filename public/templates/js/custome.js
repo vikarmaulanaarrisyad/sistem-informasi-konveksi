@@ -18,58 +18,33 @@ function preview(target, image) {
 function resetForm(selector) {
     $(selector)[0].reset();
 
-    if ($(selector).find(".summernote").length !== 0) {
-        $(selector).find(".summernote").summernote("code", "");
-    }
+    // Reset Summernote editor content
+    $(selector)
+        .find(".summernote")
+        .each(function () {
+            $(this).summernote("code", "");
+        });
 
-    if ($(selector).find(".img-thumbnail").length !== 0) {
-        $(selector).find(".img-thumbnail").attr("src", "").hide();
-        $(selector).find(".custom-file-label").text("Choose file");
-    }
+    // Reset image thumbnail and custom file label
+    $(selector).find(".img-thumbnail").attr("src", "").hide();
+    $(selector).find(".custom-file-label").text("Choose file");
 
-    if ($(selector).find(".select2").length !== 0) {
-        $(selector).find(".select2").val(null).trigger("change");
-    }
+    // Reset Select2 elements
+    $(selector).find(".select2").val(null).trigger("change");
 
-    if ($(selector).find(".duallistbox").length !== 0) {
-        $(selector).find(".duallistbox").empty();
-        $(selector).find(".duallistbox").bootstrapDualListbox("refresh");
-    }
-
+    // Reset custom file inputs
     $(".custom-file-input").next(".custom-file-label").text("Choose file");
     $(".custom-file-input").val("");
 
-    $(".select2").trigger("change");
+    // Trigger change for Select2 and form controls
     $(".select2").val("").trigger("change");
+    $(".select2").trigger("change");
 
+    // Remove invalid styles
     $(
         ".form-control, .custom-select, [type=radio], [type=checkbox], [type=file], .select2, .note-editor"
     ).removeClass("is-invalid");
     $(".invalid-feedback").remove();
-}
-
-function loopForm1(originalForm) {
-    for (field in originalForm) {
-        if ($(`[name=${field}]`).attr("type") != "file") {
-            if ($(`[name=${field}]`).hasClass("summernote")) {
-                $(`[name=${field}]`).summernote("code", originalForm[field]);
-            } else if ($(`[name=${field}]`).attr("type") == "checkbox") {
-                $(`[name=${field}]`)
-                    .filter(`[value="${originalForm[field]}"]`)
-                    .prop("checked", true);
-            } else if ($(`[name=${field}]`).attr("type") == "radio") {
-                $(`[name=${field}]`)
-                    .filter(`[value="${originalForm[field]}"]`)
-                    .prop("checked", true);
-            } else {
-                $(`[name=${field}]`).val(originalForm[field]);
-            }
-
-            $("select").trigger("change");
-        } else {
-            $(`.preview-${field}`).attr("src", originalForm[field]).show();
-        }
-    }
 }
 
 function loopForm(originalForm) {
@@ -148,108 +123,45 @@ function loopErrors(errors) {
     }
 }
 
-function loopErrors1(errors) {
-    $(".invalid-feedback").remove();
-    $(".is-invalid").removeClass("is-invalid");
-
-    if (errors == undefined) {
-        return;
-    }
-
-    for (error in errors) {
-        $(`[name=${error}]`).addClass("is-invalid");
-
-        if ($(`[name=${error}]`).hasClass("select2")) {
-            $(`[name=${error}]`).addClass("is-invalid");
-            $(
-                `<span class="error invalid-feedback">${errors[error][0]}</span>`
-            ).insertAfter($(`[name=${error}]`).next());
-        } else if ($(`[name=${error}]`).hasClass("summernote")) {
-            $(".note-editor").addClass("is-invalid");
-            $(
-                `<span class="error invalid-feedback">${errors[error][0]}</span>`
-            ).insertAfter($(`[name=${error}]`).next());
-        } else if ($(`[name=${error}]`).hasClass("custom-control-input")) {
-            $(
-                `<span class="error invalid-feedback">${errors[error][0]}</span>`
-            ).insertAfter($(`[name=${error}]`).next());
-        } else {
-            if ($(`[name=${error}]`).length == 0) {
-                $(`[name="${error}[]"]`).addClass("is-invalid");
-                $(
-                    `<span class="error invalid-feedback">${errors[error][0]}</span>`
-                ).insertAfter($(`[name="${error}[]"]`).next());
-            } else {
-                if (
-                    $(`[name=${error}]`)
-                        .next()
-                        .hasClass("input-group-append") ||
-                    $(`[name=${error}]`).next().hasClass("input-group-prepend")
-                ) {
-                    $(
-                        `<span class="error invalid-feedback">${errors[error][0]}</span>`
-                    ).insertAfter($(`[name=${error}]`).next());
-                    $(".input-group-append .input-group-text").css(
-                        "border-radius",
-                        "0 .25rem .25rem 0"
-                    );
-                    $(".input-group-prepend")
-                        .next()
-                        .css("border-radius", "0 .25rem .25rem 0");
-                } else {
-                    $(
-                        `<span class="error invalid-feedback">${errors[error][0]}</span>`
-                    ).insertAfter($(`[name=${error}]`));
-                }
-            }
-        }
-    }
-}
-
 function format_uang(input) {
-    a = input.value;
-    if (a == undefined) {
-        a = input.toString();
-    }
-    b = a.replace(/[^\d]/g, "");
-    c = "";
-    length = b.length;
+    let value = input.value || input.toString();
+    value = value.replace(/[^\d]/g, "");
+    let formatted = "";
+    const length = value.length;
 
-    j = 0;
-    for (i = length; i > 0; i--) {
-        j = j + 1;
-        if (j % 3 == 1 && j != 1) {
-            c = b.substr(i - 1, 1) + "." + c;
+    for (let i = length; i > 0; i--) {
+        if ((length - i) % 3 === 0 && i !== length) {
+            formatted = value.charAt(i - 1) + "." + formatted;
         } else {
-            c = b.substr(i - 1, 1) + c;
+            formatted = value.charAt(i - 1) + formatted;
         }
     }
-    if (input.value == undefined) {
-        return c;
+
+    if (input.value === undefined) {
+        return formatted;
     }
 
-    input.value = c;
+    input.value = formatted;
 }
 
-var url = window.location;
+var url = window.location.pathname; // Ambil path URL saat ini
 
-// for sidebar menu entirely but not cover treeview
-$("ul.nav-sidebar a")
-    .filter(function () {
-        if (this.href) {
-            return this.href == url || url.href.indexOf(this.href) == 0;
-        }
-    })
-    .addClass("active");
+// STISLA - Sidebar menu handling with active class for <li> and <a> elements, including dropdowns
+$("ul.sidebar-menu a").each(function () {
+    var link = this.pathname; // Ambil path dari href
 
-// for the treeview
-$("ul.nav-treeview a")
-    .filter(function () {
-        if (this.href) {
-            return this.href == url || url.href.indexOf(this.href) == 0;
+    // Memeriksa apakah URL saat ini cocok dengan link
+    if (url == link || url.indexOf(link) === 0) {
+        $(this).addClass("active"); // Menambahkan kelas 'active' pada link yang cocok
+        $(this).closest("li").addClass("active"); // Menambahkan kelas 'active' pada <li> yang mengandung link
+
+        // Jika item tersebut berada di dalam dropdown, tampilkan dropdown
+        var dropdown = $(this).closest("li.dropdown");
+        if (dropdown.length) {
+            dropdown.addClass("active"); // Menandai dropdown sebagai aktif
+            dropdown.find(".dropdown-menu").addClass("show"); // Menampilkan dropdown menu
         }
-    })
-    .parentsUntil(".nav-sidebar > .nav-treeview")
-    .addClass("menu-open")
-    .prev("a")
-    .addClass("active");
+    }
+});
+
+
