@@ -53,4 +53,9 @@ class KategoriRepositoryImplement extends Eloquent implements KategoriRepository
         $query = $this->model->find($id);
         return $query->delete();
     }
+
+    public function findByName($data)
+    {
+        return $this->model->where('nama_kategori', 'like', '%' . $data . '%')->get();
+    }
 }
