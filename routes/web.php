@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LayananController;
+use App\Http\Controllers\PesananController;
 use App\Http\Controllers\ProdukController;
 use Illuminate\Support\Facades\Route;
 
@@ -39,4 +40,10 @@ Route::group(['middleware' => ['auth']], function () {
     // Route : Produk
     Route::get('/produk/data', [ProdukController::class, 'data'])->name('produk.data');
     Route::resource('/produk', ProdukController::class);
+
+    // Route : Pesanan
+    Route::get('/pesanan/data', [PesananController::class, 'data'])->name('pesanan.data');
+    Route::post('/pesanan/update-status', [PesananController::class, 'updateStatus'])->name('pesanan.updateStatus');
+    Route::get('/pesanan/{id}/detail', [PesananController::class, 'detail'])->name('pesanan.detail');
+    Route::resource('/pesanan', PesananController::class);
 });

@@ -24,14 +24,14 @@
                     <li><a class="nav-link" href="{{ route('produk.index') }}">Stok Produk</a></li>
                 </ul>
             </li>
-            {{--  <li class="dropdown">
+            <li class="dropdown">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i>
                     <span>Pesanan</span></a>
                 <ul class="dropdown-menu">
-                    <li><a class="nav-link" href="#">Custom Pesanan</a></li>
+                    <li><a class="nav-link" href="{{ route('pesanan.index') }}">Custom Pesanan</a></li>
                     <li><a class="nav-link" href="#l">Pesanan</a></li>
                 </ul>
-            </li>  --}}
+            </li>
 
             <li><a class="nav-link" href="blank.html"><i class="far fa-square"></i> <span>Blank
                         Page</span></a></li>
