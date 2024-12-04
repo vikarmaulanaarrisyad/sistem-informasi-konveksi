@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Services\Pesanan;
+namespace App\Services\Pembelian;
 
 use LaravelEasyRepository\ServiceApi;
-use App\Repositories\Pesanan\PesananRepository;
+use App\Repositories\Pembelian\PembelianRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
-class PesananServiceImplement extends ServiceApi implements PesananService
+class PembelianServiceImplement extends ServiceApi implements PembelianService
 {
 
     /**
@@ -26,9 +26,9 @@ class PesananServiceImplement extends ServiceApi implements PesananService
      * don't change $this->mainRepository variable name
      * because used in extends service class
      */
-    protected PesananRepository $mainRepository;
+    protected PembelianRepository $mainRepository;
 
-    public function __construct(PesananRepository $mainRepository)
+    public function __construct(PembelianRepository $mainRepository)
     {
         $this->mainRepository = $mainRepository;
     }
@@ -70,18 +70,8 @@ class PesananServiceImplement extends ServiceApi implements PesananService
         DB::beginTransaction();
 
         try {
-            // Pisahkan file dari data
-            $file = $data['foto_desain'];
-            unset($data['foto_desain']);
-
             // Simpan data ke database
             $pesanan = $this->mainRepository->store($data);
-
-            // Jika transaksi berhasil, unggah file
-            $uploadPath = upload('upload', $file, 'pesanan');
-            $pesanan->update(['foto_desain' => $uploadPath]);
-
-            // Commit transaksi
             DB::commit();
 
             return [
@@ -89,7 +79,6 @@ class PesananServiceImplement extends ServiceApi implements PesananService
                 'message' => 'Data berhasil disimpan.',
             ];
         } catch (\Throwable $th) {
-            // Rollback jika terjadi kesalahan
             DB::rollBack();
 
             return [
@@ -143,27 +132,8 @@ class PesananServiceImplement extends ServiceApi implements PesananService
         try {
             // Ambil data pesanan yang akan diupdate
             $pesanan = $this->mainRepository->find($id);
-
-            // Pisahkan file dari data jika ada
-            $file = isset($data['foto_desain']) ? $data['foto_desain'] : null;
-            unset($data['foto_desain']);
-
-            // Update data pesanan
             $pesanan->update($data);
 
-            // Jika ada file baru, unggah dan update jalur file
-            if ($file) {
-                // Hapus file lama jika ada
-                if ($pesanan->foto_desain && file_exists(public_path($pesanan->foto_desain))) {
-                    unlink(public_path($pesanan->foto_desain));
-                }
-
-                // Upload file baru
-                $uploadPath = upload('upload', $file, 'pesanan');
-                $pesanan->update(['foto_desain' => $uploadPath]);
-            }
-
-            // Commit transaksi
             DB::commit();
 
             return [
@@ -171,7 +141,6 @@ class PesananServiceImplement extends ServiceApi implements PesananService
                 'message' => 'Data berhasil diperbarui.',
             ];
         } catch (\Throwable $th) {
-            // Rollback jika terjadi kesalahan
             DB::rollBack();
 
             return [
@@ -185,15 +154,6 @@ class PesananServiceImplement extends ServiceApi implements PesananService
     {
         $this->mainRepository->destroy($id);
 
-        return [
-            'status'  => 'success',
-            'message' => 'Data berhasil diperbarui.',
-        ];
-    }
-
-    public function updateStatus($data)
-    {
-        $this->mainRepository->updateStatus($data);
         return [
             'status'  => 'success',
             'message' => 'Data berhasil diperbarui.',

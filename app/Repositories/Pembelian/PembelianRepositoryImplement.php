@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Repositories\Pesanan;
+namespace App\Repositories\Pembelian;
 
 use LaravelEasyRepository\Implementations\Eloquent;
-use App\Models\Pesanan;
+use App\Models\Pembelian;
 
-class PesananRepositoryImplement extends Eloquent implements PesananRepository
+class PembelianRepositoryImplement extends Eloquent implements PembelianRepository
 {
 
     /**
@@ -13,16 +13,16 @@ class PesananRepositoryImplement extends Eloquent implements PesananRepository
      * Don't remove or change $this->model variable name
      * @property Model|mixed $model;
      */
-    protected Pesanan $model;
+    protected Pembelian $model;
 
-    public function __construct(Pesanan $model)
+    public function __construct(Pembelian $model)
     {
         $this->model = $model;
     }
-    
+
     public function getData()
     {
-        return $this->model->with(['kategori']);
+        return $this->model->with(['user']);
     }
 
     public function store($data)
@@ -32,12 +32,12 @@ class PesananRepositoryImplement extends Eloquent implements PesananRepository
 
     public function detail($id)
     {
-        return $this->model->with(['kategori', 'pesananDetail'])->find($id);
+        return $this->model->with(['kategori', 'user', 'pembelianDetail.produk'])->find($id);
     }
 
     public function show($id)
     {
-        return $this->model->with(['kategori', 'pesananDetail'])->find($id);
+        return $this->model->with(['kategori', 'user', 'pembelianDetail.produk'])->find($id);
     }
 
     public function update($data, $id)
@@ -50,12 +50,5 @@ class PesananRepositoryImplement extends Eloquent implements PesananRepository
     {
         $query = $this->model->find($id);
         return $query->delete();
-    }
-
-    public function updateStatus($data)
-    {
-        $query = $this->model->find($data['id']);
-        $query->status = $data['status'];
-        $query->save();
     }
 }

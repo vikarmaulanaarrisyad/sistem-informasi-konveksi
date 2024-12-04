@@ -123,6 +123,15 @@ function loopErrors(errors) {
     }
 }
 
+function formatRupiah(value) {
+    return new Intl.NumberFormat("id-ID", {
+        style: "currency",
+        currency: "IDR",
+        minimumFractionDigits: 0,
+    }).format(value);
+}
+
+
 function format_uang(input) {
     let value = input.value || input.toString();
     value = value.replace(/[^\d]/g, "");

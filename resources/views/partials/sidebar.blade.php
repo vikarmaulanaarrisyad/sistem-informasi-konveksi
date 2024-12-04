@@ -29,7 +29,7 @@
                     <span>Pesanan</span></a>
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="{{ route('pesanan.index') }}">Custom Pesanan</a></li>
-                    <li><a class="nav-link" href="#l">Pesanan</a></li>
+                    <li><a class="nav-link" href="{{ route('pembelian.index') }}">Pesanan</a></li>
                 </ul>
             </li>
 

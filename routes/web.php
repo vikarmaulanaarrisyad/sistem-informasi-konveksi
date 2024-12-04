@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LayananController;
+use App\Http\Controllers\PembelianController;
 use App\Http\Controllers\PesananController;
 use App\Http\Controllers\ProdukController;
 use Illuminate\Support\Facades\Route;
@@ -46,4 +47,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('/pesanan/update-status', [PesananController::class, 'updateStatus'])->name('pesanan.updateStatus');
     Route::get('/pesanan/{id}/detail', [PesananController::class, 'detail'])->name('pesanan.detail');
     Route::resource('/pesanan', PesananController::class);
+
+    // Route : Pembelian
+    Route::get('/pembelian/data', [PembelianController::class, 'data'])->name('pembelian.data');
+    Route::get('/pembelian/{id}/detail', [PembelianController::class, 'detail'])->name('pembelian.detail');
+    Route::resource('pembelian', PembelianController::class);
 });
