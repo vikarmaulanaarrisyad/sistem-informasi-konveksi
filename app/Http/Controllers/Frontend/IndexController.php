@@ -12,9 +12,8 @@ class IndexController extends Controller
 {
     public function index()
     {
-        $id = Auth::user()->id;
-        $user = User::find($id);
-        return view('frontend.index', compact('user'));
+        // return view('frontend.index', compact('user'));
+        return view('frontend.index');
     }
 
     public function userLogout()
