@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services\Category;
+namespace App\Repositories\SubCategory;
 
-use LaravelEasyRepository\BaseService;
+use LaravelEasyRepository\Repository;
 
-interface CategoryService extends BaseService
+interface SubCategoryRepository extends Repository
 {
     public function getData();
     public function store($data);

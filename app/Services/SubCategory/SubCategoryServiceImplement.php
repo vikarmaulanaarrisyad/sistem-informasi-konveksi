@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services\Category;
+namespace App\Services\SubCategory;
 
 use LaravelEasyRepository\ServiceApi;
-use App\Repositories\Category\CategoryRepository;
+use App\Repositories\SubCategory\SubCategoryRepository;
 use Illuminate\Support\Facades\Validator;
 
-class CategoryServiceImplement extends ServiceApi implements CategoryService
+class SubCategoryServiceImplement extends ServiceApi implements SubCategoryService
 {
 
     /**
@@ -25,9 +25,9 @@ class CategoryServiceImplement extends ServiceApi implements CategoryService
      * don't change $this->mainRepository variable name
      * because used in extends service class
      */
-    protected CategoryRepository $mainRepository;
+    protected SubCategoryRepository $mainRepository;
 
-    public function __construct(CategoryRepository $mainRepository)
+    public function __construct(SubCategoryRepository $mainRepository)
     {
         $this->mainRepository = $mainRepository;
     }
@@ -40,8 +40,8 @@ class CategoryServiceImplement extends ServiceApi implements CategoryService
     public function store($data)
     {
         $validator = Validator::make($data, [
-            'category_name' => 'required',
-            'category_icon' => 'required',
+            'subcategory_name' => 'required',
+            'category_id' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -69,8 +69,8 @@ class CategoryServiceImplement extends ServiceApi implements CategoryService
     public function update($data, $id)
     {
         $validator = Validator::make($data, [
-            'category_name' => 'required',
-            'category_icon' => 'required',
+            'subcategory_name' => 'required',
+            'category_id' => 'required',
         ]);
 
         if ($validator->fails()) {
