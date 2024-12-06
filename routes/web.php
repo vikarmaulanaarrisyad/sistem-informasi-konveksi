@@ -6,6 +6,7 @@ use App\Http\Controllers\Frontend\{
 
 use App\Http\Controllers\{
     BrandController,
+    CategoryController,
     DashboardController,
     KategoriController,
     LayananController,
@@ -66,4 +67,8 @@ Route::group(['middleware' => ['auth']], function () {
     // Route : Brand
     Route::get('/brands/data', [BrandController::class, 'data'])->name('brands.data');
     Route::resource('/brands', BrandController::class)->except('create', 'edit');
+
+    // Route : Category
+    Route::get('/category/data', [CategoryController::class, 'data'])->name('category.data');
+    Route::resource('/category', CategoryController::class)->except('create', 'edit');
 });

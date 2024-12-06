@@ -21,7 +21,7 @@
                     <span>Produk</span></a>
                 <ul class="dropdown-menu">
                     <li><a class="nav-link" href="{{ route('brands.index') }}">Brand</a></li>
-                    <li><a class="nav-link" href="{{ route('kategori.index') }}">Kategori</a></li>
+                    <li><a class="nav-link" href="{{ route('category.index') }}">Kategori</a></li>
                     <li><a class="nav-link" href="{{ route('produk.index') }}">Stok Produk</a></li>
                 </ul>
             </li>
