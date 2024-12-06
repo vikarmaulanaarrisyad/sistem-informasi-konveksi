@@ -1,11 +1,18 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\KategoriController;
-use App\Http\Controllers\LayananController;
-use App\Http\Controllers\PembelianController;
-use App\Http\Controllers\PesananController;
-use App\Http\Controllers\ProdukController;
+use App\Http\Controllers\Frontend\{
+    IndexController
+};
+
+use App\Http\Controllers\{
+    DashboardController,
+    KategoriController,
+    LayananController,
+    PembelianController,
+    PesananController,
+    ProdukController
+};
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,15 +26,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('auth.login');
-});
+Route::get('/', [IndexController::class, 'index']);
+Route::get('/user/logout', [IndexController::class, 'userLogout'])->name('user.logout');
+Route::get('/user/profile/edit', [IndexController::class, 'userProfileEdit'])->name('user.profile.edit');
+Route::post('/user/profile/update', [IndexController::class, 'userProfileUpdate'])->name('user.profile.update');
+Route::get('/user/change/password', [IndexController::class, 'changePassword'])->name('change.password');
+Route::post('/user/update/password', [IndexController::class, 'userUpdatePassword'])->name('user.update.password');
+
 
 Route::group(['middleware' => ['auth']], function () {
 
-    Route::group(['middleware' => ['role_or_permission:view-dashboard']], function () {
-        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    });
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Route : Layanan
     Route::get('/layanan/data', [LayananController::class, 'data'])->name('layanan.data');

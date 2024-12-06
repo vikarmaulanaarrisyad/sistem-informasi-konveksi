@@ -1,155 +1,145 @@
-@extends('layouts.guest')
-
-@section('title', 'Halaman Login')
+@extends('frontend.main_master')
 
 @section('content')
-    <div class="row">
-        <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
-            <div class="login-brand">
-                <img src="{{ asset('/templates') }}/assets/img/stisla-fill.svg" alt="logo" width="100"
-                    class="shadow-light rounded-circle">
-            </div>
+    <div class="breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-inner">
+                <ul class="list-inline list-unstyled">
+                    <li><a href="{{ url('/') }}">Home</a></li>
+                    <li class='active'>Login</li>
+                </ul>
+            </div><!-- /.breadcrumb-inner -->
+        </div><!-- /.container -->
+    </div>
 
-            <div class="card card-primary">
-                <div class="card-header">
-                    <h4>Login</h4>
-                </div>
-
-                <div class="card-body">
-                    <form id="loginForm" method="post" class="needs-validation" novalidate="">
-                        @csrf
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="text" class="form-control @error('auth') is-invalid @enderror" id="auth"
-                                name="auth" value="{{ old('auth') }}" autocomplete="off" onfocus=this.value=''>
-
-                            @error('auth')
-                                <span class="invalid-feedback">
-                                    {{ $message }}
-                                </span>
-                            @enderror
-                        </div>
-
-                        <div class="form-group">
-                            <div class="d-block">
-                                <label for="password" class="control-label">Password</label>
+    <div class="body-content">
+        <div class="container">
+            <div class="sign-in-page">
+                <div class="row">
+                    <!-- Sign-in -->
+                    <div class="col-md-6 col-sm-6 sign-in">
+                        <h4 class="">Sign in</h4>
+                        <p class="">Hello, Welcome to your account.</p>
+                        <form method="POST" action="{{ route('login') }}" role="form">
+                            @csrf
+                            <div class="form-group">
+                                <label class="info-title" for="auth">Username <span>*</span></label>
+                                <input type="text" name="auth" class="form-control unicase-form-control text-input"
+                                    id="auth">
+                                @error('auth')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
                             </div>
-                            <input type="password" class="form-control @error('password') is-invalid @enderror password"
-                                id="password" name="password" onfocus=this.value='' autocomplete="off">
+                            <div class="form-group">
+                                <label class="info-title" for="password">Password <span>*</span></label>
+                                <input type="password" name="password" class="form-control unicase-form-control text-input"
+                                    id="password">
+                                @error('auth')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="radio outer-xs">
+                                <label>
+                                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">Remember
+                                    me!
+                                </label>
+                                <a href="{{ route('password.request') }}" class="forgot-password pull-right">Forgot your
+                                    Password?</a>
+                            </div>
+                            <button type="submit" class="btn-upper btn btn-primary checkout-page-button">Login</button>
+                        </form>
+                    </div>
+                    <!-- Sign-in -->
 
-                            @error('password')
-                                <span class="invalid-feedback">
-                                    {{ $message }}
-                                </span>
-                            @enderror
-                        </div>
+                    <form method="POST" action="{{ route('register') }}">
+                        @csrf
+                        <div class="col-md-6 col-sm-6 create-new-account">
+                            <h4 class="checkout-subtitle">Create a new account</h4>
+                            <p class="text title-tag-line">Create your new account.</p>
+                            <form class="register-form outer-top-xs" role="form">
+                                <div class="form-group">
+                                    <label class="info-title" for="name">Nama Lengkap <span>*</span></label>
+                                    <input type="string" name="name"
+                                        class="form-control unicase-form-control text-input" id="name"
+                                        autocomplete="off">
 
-                        <div class="form-group">
-                            <button type="button" onclick="login()" id="loginButton"
-                                class="btn btn-lg btn-primary btn-login mb-2">
-                                <i class="fas fa-sign-in-alt"></i> <span id="buttonText">Masuk</span>
-                                <span id="loadingSpinner" style="display:none;"><i
-                                        class="fas fa-spinner fa-spin"></i></span>
-                            </button>
+                                    @error('name')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="info-title" for="username">Username <span>*</span></label>
+                                    <input type="text" name="username"
+                                        class="form-control unicase-form-control text-input" id="username"
+                                        autocomplete="off">
+                                    @error('username')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="info-title" for="email">Email Aktif <span>*</span></label>
+                                    <input type="email" name="email"
+                                        class="form-control unicase-form-control text-input" id="email"
+                                        autocomplete="off">
+                                    @error('email')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="info-title" for="numberphone">Nomor Handphone <span>*</span></label>
+                                    <input type="number" name="numberphone"
+                                        class="form-control unicase-form-control text-input" id="numberphone"
+                                        autocomplete="off">
+                                    @error('numberphone')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="info-title" for="password">Password <span>*</span></label>
+                                    <input type="password" name="password"
+                                        class="form-control unicase-form-control text-input" id="password"
+                                        autocomplete="off">
+                                    @error('password')
+                                        <span class="invalid-feedback" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="info-title" for="password_confirmation">Confirm Password
+                                        <span>*</span></label>
+                                    <input type="password" name="password_confirmation"
+                                        class="form-control unicase-form-control text-input" id="password_confirmation"
+                                        autocomplete="off">
+                                </div>
+                                <button type="submit" class="btn-upper btn btn-primary checkout-page-button">Sign
+                                    Up</button>
+                            </form>
                         </div>
                     </form>
                 </div>
             </div>
-            <div class="mt-5 text-muted text-center">
-                Belum punya akun? <a href="{{ route('register') }}">Buat Akun</a>
-            </div>
-            <div class="simple-footer">
-                Copyright &copy; {{ date('Y') }}
-            </div>
-        </div>
-    </div>
+            <!-- ============================================== BRANDS CAROUSEL ============================================== -->
+            @include('frontend.body.brands')
 
-    <!-- Animasi Loading -->
-    <div id="loading-animation"
-        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.7); z-index: 9999; align-items: center; justify-content: center;">
-        <div>
-            <img src="{{ asset('/templates/assets/img/loading.gif') }}" alt="Loading..." width="50">
-            <p style="text-align: center; font-size: 14px;">Harap tunggu...</p>
+            <!-- ============================================== BRANDS CAROUSEL : END ============================================== -->
         </div>
     </div>
 @endsection
-
-@push('css_vendor')
-    <link rel="stylesheet" href="{{ asset('/templates/plugin/sweetalert2/bootstrap-4.min.css') }}">
-@endpush
-
-@push('scripts')
-    <script src="{{ asset('/templates/plugin/sweetalert2/sweetalert2.min.js') }}"></script>
-@endpush
-
-@push('scripts')
-    <script>
-        // Menangani keypress event
-        $(document).on('keypress', function(e) {
-            if (e.which == 13) {
-                login();
-            }
-        });
-
-        // Fungsi untuk login
-        // Fungsi untuk login
-        function login() {
-            let auth = $('#auth').val();
-            let password = $('.password').val();
-
-            if (!auth) {
-                toastr.info('Email wajib diisi');
-                return;
-            }
-
-            if (!password) {
-                toastr.info('Password wajib diisi');
-                return;
-            }
-
-            // Disable the button to prevent multiple clicks during the Ajax request
-            const loginButton = $('#loginButton');
-            const buttonText = $('#buttonText');
-            const loadingSpinner = $('#loadingSpinner');
-
-            loginButton.attr('disabled', true);
-            buttonText.hide();
-            loadingSpinner.show();
-
-            $.ajax({
-                type: 'POST',
-                url: '{{ route('login') }}',
-                data: $('#loginForm').serialize(),
-                success: function(response) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Login berhasil',
-                        text: 'Selamat anda berhasil login ke dalam sistem kami',
-                        showConfirmButton: false,
-                        timer: 3000
-                    }).then(() => {
-                        window.location.href = '{{ route('dashboard') }}';
-                    });
-                },
-                error: function(errors) {
-                    // Show error message
-                    loopErrors(errors.responseJSON.errors);
-
-                    Swal.fire({
-                        icon: 'error', // Fixed typo from 'errors' to 'error'
-                        title: 'Login gagal',
-                        text: errors.responseJSON.message,
-                        showConfirmButton: false,
-                        timer: 3000
-                    });
-                },
-                complete: function() {
-                    // Re-enable the button and hide the loading indicator
-                    loginButton.attr('disabled', false);
-                    buttonText.show();
-                    loadingSpinner.hide();
-                }
-            });
-        }
-    </script>
-@endpush

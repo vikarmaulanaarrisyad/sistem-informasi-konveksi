@@ -159,7 +159,6 @@ class PesananController extends Controller
         return '<span class="badge ' . $class . '">' . $status . '</span>';
     }
 
-
     /**
      * Render image column for DataTables.
      */

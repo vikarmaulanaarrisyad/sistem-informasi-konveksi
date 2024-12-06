@@ -22,6 +22,14 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-12">
+            <div class="form-group">
+                <label for="foto_layanan">Foto Layanan</label>
+                <input type="file" class="form-control" name="foto_layanan" id="foto_layanan" accept="image/*">
+            </div>
+        </div>
+    </div>
     <x-slot name="footer">
         <button type="button" onclick="submitForm(this.form)" class="btn btn-sm btn-primary" id="submitBtn">
             <i class="fas fa-save mr-1"></i>

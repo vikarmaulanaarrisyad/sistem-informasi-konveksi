@@ -1,34 +1,46 @@
-<x-guest-layout>
-    <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
-        </x-slot>
+@extends('frontend.main_master')
 
-        <div class="mb-4 text-sm text-gray-600">
-            {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+@section('content')
+    <div class="breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-inner">
+                <ul class="list-inline list-unstyled">
+                    <li><a href="{{ url('/') }}">Home</a></li>
+                    <li class='active'>Lupa Password</li>
+                </ul>
+            </div><!-- /.breadcrumb-inner -->
+        </div><!-- /.container -->
+    </div>
+
+    <div class="body-content">
+        <div class="container">
+            <div class="sign-in-page">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 sign-in">
+                        <h4 class="">Lupa Password</h4>
+                        <p class="">Silahkan masukkan email anda</p>
+                        <form method="POST" action="{{ route('password.email') }}">
+                            @csrf
+                            <div class="form-group">
+                                <label class="info-title" for="email">Email <span>*</span></label>
+                                <input type="email" name="email" class="form-control unicase-form-control text-input"
+                                    id="email">
+                                @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <button type="submit" class="btn-upper btn btn-primary checkout-page-button">Request Reset
+                                Password</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- ============================================== BRANDS CAROUSEL ============================================== -->
+            @include('frontend.body.brands')
+
+            <!-- ============================================== BRANDS CAROUSEL : END ============================================== -->
         </div>
-
-        @if (session('status'))
-            <div class="mb-4 font-medium text-sm text-green-600">
-                {{ session('status') }}
-            </div>
-        @endif
-
-        <x-validation-errors class="mb-4" />
-
-        <form method="POST" action="{{ route('password.email') }}">
-            @csrf
-
-            <div class="block">
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <x-button>
-                    {{ __('Email Password Reset Link') }}
-                </x-button>
-            </div>
-        </form>
-    </x-authentication-card>
-</x-guest-layout>
+    </div>
+@endsection
