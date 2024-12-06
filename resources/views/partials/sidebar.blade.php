@@ -20,6 +20,7 @@
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i>
                     <span>Produk</span></a>
                 <ul class="dropdown-menu">
+                    <li><a class="nav-link" href="{{ route('brands.index') }}">Brand</a></li>
                     <li><a class="nav-link" href="{{ route('kategori.index') }}">Kategori</a></li>
                     <li><a class="nav-link" href="{{ route('produk.index') }}">Stok Produk</a></li>
                 </ul>

@@ -5,6 +5,7 @@ use App\Http\Controllers\Frontend\{
 };
 
 use App\Http\Controllers\{
+    BrandController,
     DashboardController,
     KategoriController,
     LayananController,
@@ -61,4 +62,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/pembelian/data', [PembelianController::class, 'data'])->name('pembelian.data');
     Route::get('/pembelian/{id}/detail', [PembelianController::class, 'detail'])->name('pembelian.detail');
     Route::resource('pembelian', PembelianController::class);
+
+    // Route : Brand
+    Route::get('/brands/data', [BrandController::class, 'data'])->name('brands.data');
+    Route::resource('/brands', BrandController::class)->except('create', 'edit');
 });
