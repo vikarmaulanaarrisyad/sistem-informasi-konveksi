@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Layanan;
 use App\Services\Layanan\LayananService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class LayananController extends Controller
 {
@@ -29,12 +30,8 @@ class LayananController extends Controller
 
         return datatables($result)
             ->addIndexColumn()
-            ->editColumn('aksi', function ($q) {
-                return '
-                <button onclick="editForm(`' . route('layanan.show', $q->id) . '`)" class="btn btn-xs btn-primary mr-1"><i class="fas fa-pencil-alt"></i></button>
-                <button onclick="deleteData(`' . route('layanan.destroy', $q->id) . '`, `' . $q->nama_jasa . '`)" class="btn btn-xs btn-danger mr-1"><i class="fas fa-trash-alt"></i></button>
-                ';
-            })
+            ->editColumn('foto_layanan', fn($q) => $this->renderImageColumn($q))
+            ->editColumn('aksi', fn($q) => $this->renderActionButtons($q))
             ->escapeColumns([])
             ->make(true);
     }
@@ -101,5 +98,29 @@ class LayananController extends Controller
         return response()->json([
             'message' => $result['message'],
         ]);
+    }
+
+    /**
+     * Render action buttons for DataTables.
+     */
+    protected function renderActionButtons($q)
+    {
+        return '
+                <button onclick="editForm(`' . route('layanan.show', $q->id) . '`)" class="btn btn-xs btn-primary mr-1"><i class="fas fa-pencil-alt"></i></button>
+                <button onclick="deleteData(`' . route('layanan.destroy', $q->id) . '`, `' . $q->nama_layanan . '`)" class="btn btn-xs btn-danger mr-1"><i class="fas fa-trash-alt"></i></button>
+        ';
+    }
+
+    /**
+     * Render image column for DataTables.
+     */
+    protected function renderImageColumn($q)
+    {
+        if ($q->foto_layanan) {
+            $imageUrl = Storage::url($q->foto_layanan);
+            return '<img src="' . $imageUrl . '" class="img-thumbnail" style="max-width: 100px;">';
+        }
+
+        return '<span class="text-muted">Tidak ada gambar</span>';
     }
 }

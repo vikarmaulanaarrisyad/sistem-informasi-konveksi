@@ -61,6 +61,7 @@ class LayananServiceImplement extends ServiceApi implements LayananService
         $validator = Validator::make($data, [
             'nama_layanan' => 'required',
             'deskripsi'    => 'nullable',
+            'foto_layanan' => 'required|mimes:png,jpg,jpeg|max:2048'
         ]);
 
         // Jika validasi gagal
@@ -100,6 +101,7 @@ class LayananServiceImplement extends ServiceApi implements LayananService
         $validator = Validator::make($data, [
             'nama_layanan' => 'required',
             'deskripsi'    => 'nullable',
+            'foto_layanan' => 'nullable|mimes:png,jpg,jpeg|max:2048'
         ]);
 
         if ($validator->fails()) {

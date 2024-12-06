@@ -1,36 +1,69 @@
-<x-guest-layout>
-    <x-authentication-card>
-        <x-slot name="logo">
-            <x-authentication-card-logo />
-        </x-slot>
+@extends('frontend.main_master')
 
-        <x-validation-errors class="mb-4" />
+@section('content')
+    <div class="breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-inner">
+                <ul class="list-inline list-unstyled">
+                    <li><a href="{{ url('/') }}">Home</a></li>
+                    <li class='active'>Reset Password</li>
+                </ul>
+            </div><!-- /.breadcrumb-inner -->
+        </div><!-- /.container -->
+    </div>
 
-        <form method="POST" action="{{ route('password.update') }}">
-            @csrf
+    <div class="body-content">
+        <div class="container">
+            <div class="sign-in-page">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 sign-in">
+                        <h4 class="">Reset Password</h4>
+                        <p class="">Silahkan masukkan password yang baru</p>
+                        <form method="POST" action="{{ route('password.update') }}">
+                            @csrf
 
-            <input type="hidden" name="token" value="{{ $request->route('token') }}">
+                            <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
-            <div class="block">
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
+                            <div class="form-group">
+                                <label class="info-title" for="email">Email <span>*</span></label>
+                                <input type="email" name="email" class="form-control unicase-form-control text-input"
+                                    id="email">
+                                @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label class="info-title" for="password">Password <span>*</span></label>
+                                <input type="password" name="password" class="form-control unicase-form-control text-input"
+                                    id="password">
+                                @error('password')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <div class="form-group">
+                                <label class="info-title" for="password">Konfirmasi Password<span>*</span></label>
+                                <input type="password" name="password_confirmation"
+                                    class="form-control unicase-form-control text-input" id="password_confirmation">
+                                @error('password_confirmation')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                            <button type="submit" class="btn-upper btn btn-primary checkout-page-button">Reset
+                                Password</button>
+                        </form>
+                    </div>
+                </div>
             </div>
+            <!-- ============================================== BRANDS CAROUSEL ============================================== -->
+            @include('frontend.body.brands')
 
-            <div class="mt-4">
-                <x-label for="password" value="{{ __('Password') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            </div>
-
-            <div class="mt-4">
-                <x-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
-                <x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <x-button>
-                    {{ __('Reset Password') }}
-                </x-button>
-            </div>
-        </form>
-    </x-authentication-card>
-</x-guest-layout>
+            <!-- ============================================== BRANDS CAROUSEL : END ============================================== -->
+        </div>
+    </div>
+@endsection

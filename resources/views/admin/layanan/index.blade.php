@@ -24,6 +24,7 @@
                             <x-table>
                                 <x-slot name="thead">
                                     <th>No</th>
+                                    <th>Gambar</th>
                                     <th>Nama Jasa</th>
                                     <th>Deskripsi</th>
                                     <th>Aksi</th>
@@ -57,6 +58,9 @@
                     name: 'DT_RowIndex',
                     orderable: false,
                     searchable: false
+                },
+                {
+                    data: 'foto_layanan'
                 },
                 {
                     data: 'nama_layanan'

@@ -94,7 +94,7 @@ class KategoriServiceImplement extends ServiceApi implements KategoriService
 
         return [
             'status'  => 'success',
-            'message' => 'Data berhasil diperbarui.',
+            'message' => 'Data berhasil dihapus.',
         ];
     }
 
