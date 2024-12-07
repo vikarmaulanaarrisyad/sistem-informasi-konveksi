@@ -12,7 +12,9 @@ use App\Http\Controllers\{
     LayananController,
     PembelianController,
     PesananController,
-    ProdukController
+    ProdukController,
+    SubCategoryController,
+    SubSubCategoryController
 };
 
 use Illuminate\Support\Facades\Route;
@@ -70,5 +72,15 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Route : Category
     Route::get('/category/data', [CategoryController::class, 'data'])->name('category.data');
+    Route::get('/category/search', [CategoryController::class, 'categorySearch'])->name('category.search');
     Route::resource('/category', CategoryController::class)->except('create', 'edit');
+
+    // Route : SubCategory
+    Route::get('/subcategory/data', [SubCategoryController::class, 'data'])->name('subcategory.data');
+    Route::get('/subcategory/search/{id}', [SubCategoryController::class, 'subCategorySearch'])->name('subcategory.search');
+    Route::resource('/subcategory', SubCategoryController::class)->except('create', 'edit');
+
+    // Route : SubCategory
+    Route::get('/subsubcategory/data', [SubSubCategoryController::class, 'data'])->name('subsubcategory.data');
+    Route::resource('/subsubcategory', SubSubCategoryController::class)->except('create', 'edit');
 });

@@ -8,16 +8,17 @@
     <div class="row">
         <div class="col-md-12 col-12">
             <div class="form-group">
-                <label for="brand_name">Nama Brand</label>
-                <input type="text" class="form-control" name="brand_name" id="brand_name" autocomplete="off">
+                <label for="category_id">Nama kategori</label>
+                <select name="category_id" id="category_id" class="form-control select2" style="width: 100%;"></select>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-12 col-md-12 col-12">
+        <div class="col-md-12 col-12">
             <div class="form-group">
-                <label for="brand_image">Upload Gambar</label>
-                <input type="file" class="form-control" name="brand_image" id="brand_image" accept="image/*">
+                <label for="subcategory_name">Nama Sub Kategori</label>
+                <input type="text" class="form-control" name="subcategory_name" id="subcategory_name"
+                    autocomplete="off">
             </div>
         </div>
     </div>

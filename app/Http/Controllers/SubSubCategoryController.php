@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
-use App\Services\Category\CategoryService;
+use App\Models\SubSubCategory;
+use App\Services\SubSubCategory\SubSubCategoryService;
 use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class SubSubCategoryController extends Controller
 {
-    private $categoryService;
+    private $subSubCategoryService;
 
-    public function __construct(CategoryService $categoryService)
+    public function __construct(SubSubCategoryService $subSubCategoryService)
     {
-        $this->categoryService = $categoryService;
+        $this->subSubCategoryService = $subSubCategoryService;
     }
 
     /**
@@ -20,16 +20,15 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('admin.category.index');
+        return view('admin.subsubcategory.index');
     }
 
     public function data()
     {
-        $result = $this->categoryService->getData();
+        $result = $this->subSubCategoryService->getData();
 
         return datatables($result)
             ->addIndexColumn()
-            ->editColumn('category_icon', fn($q) => $this->renderCategoryIcon($q))
             ->editColumn('aksi', fn($q) => $this->renderActionButtons($q))
             ->escapeColumns([])
             ->make(true);
@@ -40,7 +39,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $result = $this->categoryService->store($request->all());
+        $result = $this->subSubCategoryService->store($request->all());
 
         if ($result['status'] === 'success') {
             return response()->json([
@@ -61,7 +60,7 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        $result = $this->categoryService->show($id);
+        $result = $this->subSubCategoryService->show($id);
         return response()->json(['data' => $result]);
     }
 
@@ -70,7 +69,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $result = $this->categoryService->update($request->all(), $id);
+        $result = $this->subSubCategoryService->update($request->all(), $id);
 
         if ($result['status'] === 'success') {
             return response()->json([
@@ -91,20 +90,11 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $result = $this->categoryService->destroy($id);
+        $result = $this->subSubCategoryService->destroy($id);
 
         return response()->json([
             'message' => $result['message'],
         ]);
-    }
-
-    public function categorySearch(Request $request)
-    {
-        $q = $request->input('category_name');
-
-        $result = $this->categoryService->findByName($q);
-
-        return response()->json($result);
     }
 
     /**
@@ -113,18 +103,8 @@ class CategoryController extends Controller
     protected function renderActionButtons($q)
     {
         return '
-                <button onclick="editForm(`' . route('category.show', $q->id) . '`)" class="btn btn-xs btn-primary mr-1"><i class="fas fa-pencil-alt"></i></button>
-                <button onclick="deleteData(`' . route('category.destroy', $q->id) . '`, `' . $q->category_name . '`)" class="btn btn-xs btn-danger mr-1"><i class="fas fa-trash-alt"></i></button>
+                <button onclick="editForm(`' . route('subsubcategory.show', $q->id) . '`)" class="btn btn-xs btn-primary mr-1"><i class="fas fa-pencil-alt"></i></button>
+                <button onclick="deleteData(`' . route('subsubcategory.destroy', $q->id) . '`, `' . $q->subsubcategory_name . '`)" class="btn btn-xs btn-danger mr-1"><i class="fas fa-trash-alt"></i></button>
             ';
-    }
-
-    /**
-     * Render category icons
-     */
-    protected function renderCategoryIcon($q)
-    {
-        return '
-            <i class="' . $q->category_icon . '"></i>
-        ';
     }
 }

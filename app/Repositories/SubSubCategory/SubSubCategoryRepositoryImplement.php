@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Repositories\Category;
+namespace App\Repositories\SubSubCategory;
 
-use App\Models\Category;
 use Illuminate\Support\Str;
+use App\Models\SubSubCategory;
 use LaravelEasyRepository\Implementations\Eloquent;
 
-class CategoryRepositoryImplement extends Eloquent implements CategoryRepository
+class SubSubCategoryRepositoryImplement extends Eloquent implements SubSubCategoryRepository
 {
 
     /**
@@ -14,35 +14,35 @@ class CategoryRepositoryImplement extends Eloquent implements CategoryRepository
      * Don't remove or change $this->model variable name
      * @property Model|mixed $model;
      */
-    protected Category $model;
+    protected SubSubCategory $model;
 
-    public function __construct(Category $model)
+    public function __construct(SubSubCategory $model)
     {
         $this->model = $model;
     }
 
     public function getData()
     {
-        return $this->model->all();
+        return $this->model->with(['category', 'subCategory'])->latest()->get();
     }
 
     public function store($data)
     {
-        $data['category_slug'] = Str::slug($data['category_name']);
+        $data['subsubcategory_slug'] = Str::slug($data['subsubcategory_name']);
         return $this->model->create($data);
     }
 
     public function show($id)
     {
-        return $this->model->find($id);
+        return $this->model->with(['category', 'subCategory'])->find($id);
     }
 
     public function update($data, $id)
     {
         $query = $this->model->find($id);
 
-        if (isset($data['category_name'])) {
-            $data['category_slug'] = Str::slug($data['category_name']);
+        if (isset($data['subsubcategory_name'])) {
+            $data['subsubcategory_slug'] = Str::slug($data['subsubcategory_name']);
         }
 
         return $query->update($data);
@@ -52,10 +52,5 @@ class CategoryRepositoryImplement extends Eloquent implements CategoryRepository
     {
         $query = $this->model->find($id);
         return $query->delete();
-    }
-
-    public function findByName($data)
-    {
-        return $this->model->where('category_name', 'like', '%' . $data . '%')->get();
     }
 }
