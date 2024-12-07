@@ -11,5 +11,5 @@ interface SubCategoryRepository extends Repository
     public function show($id);
     public function update($data, $id);
     public function destroy($id);
-    public function findByName($data);
+    public function findById($data);
 }

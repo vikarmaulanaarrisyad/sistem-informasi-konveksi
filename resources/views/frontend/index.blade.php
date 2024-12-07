@@ -386,9 +386,9 @@
                             <div class="item">
                                 <div class="products">
                                     <div class="hot-deal-wrapper">
-                                        <div class="image"> <img
-                                                src="{{ asset('frontend/assets/images/hot-deals/p25.jpg') }}"
-                                                alt=""> </div>
+                                        <div class="image"> 
+                                            <img src="{{ asset('frontend/assets/images/hot-deals/p25.jpg') }}" alt=""> 
+                                            </div>
                                         <div class="sale-offer-tag"><span>49%<br>
                                                 off</span></div>
                                         <div class="timing-wrapper">

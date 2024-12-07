@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services\SubCategory;
+namespace App\Services\SubSubCategory;
 
 use LaravelEasyRepository\ServiceApi;
-use App\Repositories\SubCategory\SubCategoryRepository;
+use App\Repositories\SubSubCategory\SubSubCategoryRepository;
 use Illuminate\Support\Facades\Validator;
 
-class SubCategoryServiceImplement extends ServiceApi implements SubCategoryService
+class SubSubCategoryServiceImplement extends ServiceApi implements SubSubCategoryService
 {
 
     /**
@@ -25,9 +25,9 @@ class SubCategoryServiceImplement extends ServiceApi implements SubCategoryServi
      * don't change $this->mainRepository variable name
      * because used in extends service class
      */
-    protected SubCategoryRepository $mainRepository;
+    protected SubSubCategoryRepository $mainRepository;
 
-    public function __construct(SubCategoryRepository $mainRepository)
+    public function __construct(SubSubCategoryRepository $mainRepository)
     {
         $this->mainRepository = $mainRepository;
     }
@@ -40,8 +40,9 @@ class SubCategoryServiceImplement extends ServiceApi implements SubCategoryServi
     public function store($data)
     {
         $validator = Validator::make($data, [
-            'subcategory_name' => 'required',
             'category_id' => 'required',
+            'sub_category_id' => 'required',
+            'subsubcategory_name' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -69,8 +70,9 @@ class SubCategoryServiceImplement extends ServiceApi implements SubCategoryServi
     public function update($data, $id)
     {
         $validator = Validator::make($data, [
-            'subcategory_name' => 'required',
             'category_id' => 'required',
+            'sub_category_id' => 'required',
+            'subsubcategory_name' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -98,10 +100,5 @@ class SubCategoryServiceImplement extends ServiceApi implements SubCategoryServi
             'status'  => 'success',
             'message' => 'Data berhasil dihapus.',
         ];
-    }
-
-    public function findById($id)
-    {
-        return $this->mainRepository->findById($id);
     }
 }

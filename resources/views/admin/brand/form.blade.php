@@ -16,7 +16,7 @@
     <div class="row">
         <div class="col-lg-12 col-md-12 col-12">
             <div class="form-group">
-                <label for="brand_image">Foto</label>
+                <label for="brand_image">Upload Gambar</label>
                 <input type="file" class="form-control" name="brand_image" id="brand_image" accept="image/*">
             </div>
         </div>

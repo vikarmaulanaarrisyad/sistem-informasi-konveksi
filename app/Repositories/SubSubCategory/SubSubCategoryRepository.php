@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Services\SubCategory;
+namespace App\Repositories\SubSubCategory;
 
-use LaravelEasyRepository\BaseService;
+use LaravelEasyRepository\Repository;
 
-interface SubCategoryService extends BaseService
+interface SubSubCategoryRepository extends Repository
 {
     public function getData();
     public function store($data);
     public function show($id);
     public function update($data, $id);
     public function destroy($id);
-    public function findById($id);
 }
