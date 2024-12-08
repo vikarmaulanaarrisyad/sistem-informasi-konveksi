@@ -99,6 +99,14 @@ class BrandController extends Controller
         ]);
     }
 
+    public function brandSearch(Request $request)
+    {
+        $query = $request->input('brand_id');
+        $result = $this->brandService->findById($query);
+
+        return response()->json($result);
+    }
+
     /**
      * Render action buttons for DataTables.
      */

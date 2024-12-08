@@ -53,4 +53,9 @@ class SubSubCategoryRepositoryImplement extends Eloquent implements SubSubCatego
         $query = $this->model->find($id);
         return $query->delete();
     }
+
+    public function findById($id)
+    {
+        return $this->model->where('sub_category_id', 'like', '%' . $id . '%')->get();
+    }
 }

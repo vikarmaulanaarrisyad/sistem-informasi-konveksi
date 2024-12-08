@@ -29,6 +29,12 @@
                     <li><a class="nav-link" href="{{ route('subsubcategory.index') }}">Sub Sub Kategori</a></li>
                 </ul>
             </li>
+
+
+            <li><a class="nav-link" href="{{ route('products.index') }}"><i class="fas fa-box"></i> <span>Manajemen
+                        Produk</span></a></li>
+
+
             <li class="dropdown">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
                         class="fas fa-shopping-cart"></i>
@@ -39,8 +45,6 @@
                 </ul>
             </li>
 
-            <li><a class="nav-link" href="blank.html"><i class="far fa-square"></i> <span>Blank
-                        Page</span></a></li>
             <li><a class="nav-link" href="credits.html"><i class="fas fa-pencil-ruler"></i>
                     <span>Credits</span></a></li>
         </ul>
