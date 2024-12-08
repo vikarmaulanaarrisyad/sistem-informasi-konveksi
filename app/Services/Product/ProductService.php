@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Repositories\Brand;
+namespace App\Services\Product;
 
-use LaravelEasyRepository\Repository;
+use LaravelEasyRepository\BaseService;
 
-interface BrandRepository extends Repository
+interface ProductService extends BaseService
 {
     public function getData();
     public function store($data);
+    public function detail($id);
     public function show($id);
     public function update($data, $id);
     public function destroy($id);
-    public function findById($id);
 }

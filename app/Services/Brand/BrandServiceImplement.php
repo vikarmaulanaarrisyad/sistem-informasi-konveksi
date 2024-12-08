@@ -99,4 +99,9 @@ class BrandServiceImplement extends ServiceApi implements BrandService
             'message' => 'Data berhasil dihapus.',
         ];
     }
+
+    public function findById($id)
+    {
+        return $this->mainRepository->findById($id);
+    }
 }

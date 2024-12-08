@@ -101,4 +101,9 @@ class SubSubCategoryServiceImplement extends ServiceApi implements SubSubCategor
             'message' => 'Data berhasil dihapus.',
         ];
     }
+
+    public function findById($id)
+    {
+        return $this->mainRepository->findById($id);
+    }
 }

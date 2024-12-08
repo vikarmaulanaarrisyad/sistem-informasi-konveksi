@@ -7,7 +7,7 @@
     ]) }}>
     <div class="modal-dialog {{ isset($size) ? $size : 'modal-lg' }}">
         <div class="modal-content">
-            <form method="{{ isset($method) ? $method : 'post' }}">
+            <form method="{{ isset($method) ? $method : 'post' }}" enctype="multipart/form-data">
                 @isset($title)
                     <div class="modal-header {{ isset($header) ? $header : 'bg-purple' }}">
                         <h5 class="modal-title">{{ $title }}</h5>

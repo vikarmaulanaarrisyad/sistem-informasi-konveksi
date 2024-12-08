@@ -97,6 +97,12 @@ class SubSubCategoryController extends Controller
         ]);
     }
 
+      public function subSubCategorySearch($id)
+    {
+        $result = $this->subSubCategoryService->findById($id);
+        return response()->json(['data' => $result]);
+    }
+
     /**
      * Render aksi buttons
      */

@@ -12,6 +12,7 @@ use App\Http\Controllers\{
     LayananController,
     PembelianController,
     PesananController,
+    ProductController,
     ProdukController,
     SubCategoryController,
     SubSubCategoryController
@@ -68,6 +69,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Route : Brand
     Route::get('/brands/data', [BrandController::class, 'data'])->name('brands.data');
+    Route::get('/brands/search', [BrandController::class, 'brandSearch'])->name('brands.search');
     Route::resource('/brands', BrandController::class)->except('create', 'edit');
 
     // Route : Category
@@ -82,5 +84,11 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Route : SubCategory
     Route::get('/subsubcategory/data', [SubSubCategoryController::class, 'data'])->name('subsubcategory.data');
+    Route::get('/subsubcategory/search/{id}', [SubSubCategoryController::class, 'SubSubCategorySearch'])->name('subsubcategory.search');
     Route::resource('/subsubcategory', SubSubCategoryController::class)->except('create', 'edit');
+
+    // Route : Product
+    Route::get('/products/data', [ProductController::class, 'data'])->name('products.data');
+    Route::get('/products/detail/{id}', [ProductController::class, 'detail'])->name('products.detail');
+    Route::resource('/products', ProductController::class);
 });

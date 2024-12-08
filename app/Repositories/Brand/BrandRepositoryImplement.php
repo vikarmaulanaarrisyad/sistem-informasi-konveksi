@@ -63,6 +63,11 @@ class BrandRepositoryImplement extends Eloquent implements BrandRepository
         return $query->delete();
     }
 
+    public function findById($id)
+    {
+        return $this->model->where('id', 'like', '%' . $id . '%')->get();
+    }
+
     /**
      * Handle file upload and return the file path.
      */

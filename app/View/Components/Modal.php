@@ -15,7 +15,7 @@ class Modal extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct($size = 'modal-md', $method = 'post')
+    public function __construct($size = 'modal-lg', $method = 'post')
     {
         $this->size = $size;
         $this->method = $method;
