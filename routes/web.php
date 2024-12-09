@@ -14,6 +14,7 @@ use App\Http\Controllers\{
     PesananController,
     ProductController,
     ProdukController,
+    SliderController,
     SubCategoryController,
     SubSubCategoryController
 };
@@ -91,4 +92,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/products/data', [ProductController::class, 'data'])->name('products.data');
     Route::get('/products/detail/{id}', [ProductController::class, 'detail'])->name('products.detail');
     Route::resource('/products', ProductController::class);
+
+    // Route : Sliders
+    Route::get('/sliders/data', [SliderController::class, 'data'])->name('sliders.data');
+    Route::resource('/sliders', SliderController::class);
 });
