@@ -33,6 +33,11 @@
 
             <li><a class="nav-link" href="{{ route('products.index') }}"><i class="fas fa-box"></i> <span>Manajemen
                         Produk</span></a></li>
+            <li>
+                <a class="nav-link" href="{{ route('sliders.index') }}"><i class="fas fa-box"></i> <span>Manajemen
+                        Slider</span>
+                </a>
+            </li>
 
 
             <li class="dropdown">
