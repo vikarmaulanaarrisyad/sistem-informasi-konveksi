@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Frontend\{
+    CartController,
     IndexController
 };
 
@@ -38,6 +39,20 @@ Route::get('/user/profile/edit', [IndexController::class, 'userProfileEdit'])->n
 Route::post('/user/profile/update', [IndexController::class, 'userProfileUpdate'])->name('user.profile.update');
 Route::get('/user/change/password', [IndexController::class, 'changePassword'])->name('change.password');
 Route::post('/user/update/password', [IndexController::class, 'userUpdatePassword'])->name('user.update.password');
+Route::get('/detail/{id}/{slug}', [IndexController::class, 'detail']);
+Route::get('/product/tag/{tag}', [IndexController::class, 'tagProduct']);
+
+// frontend category
+Route::get('/category/product/{subcat_id}/{slug}', [IndexController::class, 'subcatProduct']);
+
+Route::get('/subsubcategory/product/{subsubcat_id}/{slug}', [IndexController::class, 'subsubcatProduct']);
+// routing get data by ajax
+Route::get('/product/view/modal/{id}', [IndexController::class, 'getProductModal']);
+
+// Route Cart
+Route::post('/cart/data/store/{id}', [CartController::class, 'addToCart']);
+Route::get('/product/mini/cart', [CartController::class, 'addMiniCart']);
+Route::get('/minicart/product-remove/{rowId}', [CartController::class, 'removeMiniCart']);
 
 
 Route::group(['middleware' => ['auth']], function () {

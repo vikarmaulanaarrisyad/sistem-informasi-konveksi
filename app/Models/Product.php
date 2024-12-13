@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Builder;
 
 class Product extends Model
 {
@@ -48,5 +49,37 @@ class Product extends Model
     public function SubSubCategory(): BelongsTo
     {
         return $this->belongsTo(SubSubCategory::class, 'subsubcategory_id');
+    }
+
+    /**
+     * Scope a query to only include active users.
+     */
+    public function scopeStatus(Builder $query): void
+    {
+        $query->where('status', 1);
+    }
+
+    /**
+     * Scope a query to only include active users.
+     */
+    public function scopeTag(Builder $query, string $tag): void
+    {
+        $query->where('product_tags', $tag);
+    }
+
+    /**
+     * Scope a query to only include active users.
+     */
+    public function scopeSubcategory(Builder $query, string $subcategory): void
+    {
+        $query->where('subcategory_id', $subcategory);
+    }
+
+    /**
+     * Scope a query to only include active users.
+     */
+    public function scopeSubsubcategory(Builder $query, string $subcategory): void
+    {
+        $query->where('subsubcategory_id', $subcategory);
     }
 }

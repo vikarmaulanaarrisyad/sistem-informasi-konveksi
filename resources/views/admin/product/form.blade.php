@@ -184,10 +184,20 @@
 
         <div class="col-md-6 col-12">
             <div class="form-group">
-                <label for="special_offer">Penawaran Khusus</label>
+                <label for="special_offer">Special Offer</label>
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" name="special_offer" id="special_offer">
-                    <label class="form-check-label" for="special_offer">Pilih Penawaran Khusus</label>
+                    <label class="form-check-label" for="special_offer">Pilih Special Offer</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-12">
+            <div class="form-group">
+                <label for="special_deals">Special Deals</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="special_deals" id="special_deals">
+                    <label class="form-check-label" for="special_deals">Pilih Special Deals</label>
                 </div>
             </div>
         </div>

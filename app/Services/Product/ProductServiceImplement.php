@@ -46,6 +46,7 @@ class ProductServiceImplement extends ServiceApi implements ProductService
             'hot_deals'          => 'nullable',
             'featured'           => 'nullable',
             'special_offer'      => 'nullable',
+            'special_deals'      => 'nullable',
             'status'             => 'required|in:0,1',
         ]);
 
@@ -99,6 +100,7 @@ class ProductServiceImplement extends ServiceApi implements ProductService
             'hot_deals'         => 'nullable',
             'featured'          => 'nullable',
             'special_offer'     => 'nullable',
+            'special_deals'     => 'nullable',
             'status'            => 'required|in:0,1',
         ]);
 
