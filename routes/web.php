@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Frontend\{
+    CartController,
     IndexController
 };
 
@@ -47,6 +48,11 @@ Route::get('/category/product/{subcat_id}/{slug}', [IndexController::class, 'sub
 Route::get('/subsubcategory/product/{subsubcat_id}/{slug}', [IndexController::class, 'subsubcatProduct']);
 // routing get data by ajax
 Route::get('/product/view/modal/{id}', [IndexController::class, 'getProductModal']);
+
+// Route Cart
+Route::post('/cart/data/store/{id}', [CartController::class, 'addToCart']);
+Route::get('/product/mini/cart', [CartController::class, 'addMiniCart']);
+Route::get('/minicart/product-remove/{rowId}', [CartController::class, 'removeMiniCart']);
 
 
 Route::group(['middleware' => ['auth']], function () {

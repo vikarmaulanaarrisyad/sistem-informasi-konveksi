@@ -52,7 +52,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="staticBackdropLabel"><strong id="pname"></strong></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="closeModal">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -88,14 +88,15 @@
                             </div>
                             <div class="form-group">
                                 <label for="qty">Quantity</label>
-                                <input type="number" class="form-control" name="" id="" value="1"
-                                    min="1">
+                                <input type="number" class="form-control" name="qty" id="qty"
+                                    value="1" min="1">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">Add to Cart</button>
+                    <input type="hidden" name="product_id" id="product_id">
+                    <button type="button" class="btn btn-primary" onclick="addToCart()">Add to Cart</button>
                 </div>
             </div>
         </div>
@@ -118,8 +119,7 @@
     <script src="{{ asset('/frontend') }}/assets/js/bootstrap-select.min.js"></script>
     <script src="{{ asset('/frontend') }}/assets/js/wow.min.js"></script>
     <script src="{{ asset('/frontend') }}/assets/js/scripts.js"></script>
-
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="text/javascript">
         $.ajaxSetup({
             headers: {
@@ -127,6 +127,7 @@
             }
         })
 
+        // function get view modal
         function productView(id) {
             $.ajax({
                 type: 'GET',
@@ -142,13 +143,15 @@
                     $('#pstock').text(data.product.product_qty)
                     $('#pimage').attr('src', data.product.product_thumbnail)
 
+                    $('#product_id').val(data.product.id)
+                    $('#qty').val(1)
+
                     //price
                     if (data.product.discount_price == 0) {
                         $('#price').text(data.product.selling_price)
                     } else {
                         $('#price').text(data.product.selling_price)
                         $('#oldprice').text(data.product.selling_price)
-
                     }
 
                     // color
@@ -171,6 +174,103 @@
                     } else {
                         $('#sizeArea').show()
                     }
+                }
+            })
+        }
+    </script>
+
+    <script>
+        // function add to cart
+        function addToCart() {
+            let product_name = $('#pname').text()
+            let id = $('#product_id').val()
+            let color = $('#color option:selected').text()
+            let size = $('#size option:selected').text()
+            let qty = $('#qty').val()
+
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                data: {
+                    product_name: product_name,
+                    color: color,
+                    size: size,
+                    qty: qty
+                },
+                url: "/cart/data/store/" + id,
+                success: function(data) {
+                    miniCart()
+                    $('#closeModal').click()
+                    Swal.fire({
+                        title: "Berhasil",
+                        text: data.success,
+                        showConfirmButton: false,
+                        timer: 3000,
+                        icon: "success"
+                    });
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function miniCart() {
+            $.ajax({
+                type: "GET",
+                url: '/product/mini/cart',
+                dataType: 'json',
+                success: function(response) {
+
+                    $('span[id="cartSubTotal"]').text(response.cartTotal)
+                    $('#cartQty').text(response.cartQty)
+
+                    let miniCart = ""
+
+                    $.each(response.carts, function(key, value) {
+                        miniCart += `<div class="cart-item product-summary">
+                                        <div class="row">
+                                            <div class="col-xs-4">
+                                                <div class="image"> <a href=""><img src="${value.options.image}"
+                                                            alt=""></a>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-7">
+                                                <h3 class="name"><a href="index.php?page-detail">${value.name}</a>
+                                                </h3>
+                                                <div class="price">Rp. ${value.price}</div>
+                                            </div>
+                                            <div class="col-xs-1 action"> <button type="submit" onclick="miniCartRemove(this.id)"  id="${value.rowId}" ><i class="fa fa-trash"></i></button> </div>
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <hr>
+                                `
+                    });
+
+                    $('#miniCart').html(miniCart)
+                }
+            })
+        }
+
+        miniCart()
+
+        // remove mini cart
+        function miniCartRemove(rowId) {
+            $.ajax({
+                type: 'GET',
+                url: "/minicart/product-remove/" + rowId,
+                dataType: 'json',
+                success: function(data) {
+                    Swal.fire({
+                        title: "Berhasil",
+                        text: data.success,
+                        showConfirmButton: false,
+                        timer: 3000,
+                        icon: "success"
+                    }).then(() => {
+                        miniCart()
+                    });
+
                 }
             })
         }

@@ -25,8 +25,6 @@
                             <img src="{{ asset('/frontend') }}/assets/images/banners/LHS-banner.jpg" alt="Image">
                         </div>
 
-
-
                         <!-- ============================================== HOT DEALS ============================================== -->
                         @include('frontend.common.hotdeals_product')
                         <!-- ============================================== HOT DEALS: END ============================================== -->
@@ -61,9 +59,7 @@
 
                             <div class="col-xs-12 col-sm-6 col-md-5 gallery-holder">
                                 <div class="product-item-holder size-big single-product-gallery small-gallery">
-
                                     <div id="owl-single-product">
-
                                         @foreach ($multiImg as $img)
                                             <div class="single-product-gallery-item" id="slide{{ $img->id }}">
                                                 <a data-lightbox="image-1" data-title="Gallery" href="#">
@@ -74,16 +70,11 @@
                                             </div>
                                         @endforeach
                                         <!-- /.single-product-gallery-item -->
-
-
                                     </div>
                                     <!-- /.single-product-slider -->
 
-
                                     <div class="single-product-gallery-thumbs gallery-thumbs">
-
                                         <div id="owl-single-product-thumbnails">
-
                                             @foreach ($multiImg as $img)
                                                 <div class="item">
                                                     <a class="horizontal-thumb active" data-target="#owl-single-product"
@@ -95,9 +86,6 @@
                                                 </div>
                                             @endforeach
                                         </div>
-
-
-
                                     </div>
                                     <!-- /.gallery-thumbs -->
 
@@ -105,7 +93,7 @@
                             </div><!-- /.gallery-holder -->
                             <div class='col-sm-6 col-md-7 product-info-block'>
                                 <div class="product-info">
-                                    <h1 class="name">{{ $product->product_name }}</h1>
+                                    <h1 class="name" id="pname">{{ $product->product_name }}</h1>
 
                                     <div class="stock-container info-container m-t-10">
                                         <div class="row">
@@ -128,11 +116,8 @@
                                     <div class="description-container m-t-20">
                                         {{ $product->short_descp }}
                                     </div><!-- /.description-container -->
-
                                     <div class="price-container info-container m-t-20">
                                         <div class="row">
-
-
                                             <div class="col-sm-6">
                                                 <div class="price-box">
                                                     @if ($product->discount_price == 0)
@@ -174,34 +159,36 @@
                                         <div class="row">
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label>Size</label>
-                                                    <select name="" id="" class="form-control">
-                                                        <option disabled selected> Pilih Size </option>
-                                                        @foreach ($product_size as $size)
-                                                            <option value="{{ $size }}">{{ $size }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
+                                                    @if ($product->product_size !== null)
+                                                        <label>Size</label>
+                                                        <select name="size" id="size" class="form-control">
+                                                            <option disabled selected> Pilih Size </option>
+                                                            @foreach ($product_size as $size)
+                                                                <option value="{{ $size }}">{{ $size }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    @endif
                                                 </div>
                                             </div>
 
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label>Color</label>
-                                                    <select name="" id="" class="form-control">
-                                                        <option disabled selected> Pilih Color </option>
-                                                        @foreach ($product_color as $color)
-                                                            <option value="{{ $color }}">{{ $color }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
+                                                    @if ($product->product_color !== null)
+                                                        <label>Color</label>
+                                                        <select name="color" id="color" class="form-control">
+                                                            <option disabled selected> Pilih Color </option>
+                                                            @foreach ($product_color as $color)
+                                                                <option value="{{ $color }}">{{ $color }}
+                                                                </option>
+                                                            @endforeach
+                                                        </select>
+                                                    @endif
                                                 </div>
                                             </div>
 
                                         </div><!-- /.row -->
                                     </div><!-- /.price-container -->
-
-
 
                                     <div class="quantity-container info-container">
                                         <div class="row">
@@ -219,14 +206,17 @@
                                                             <div class="arrow minus gradient"><span class="ir"><i
                                                                         class="icon fa fa-sort-desc"></i></span></div>
                                                         </div>
-                                                        <input type="text" value="1">
+                                                        <input type="text" value="1" id="qty"
+                                                            min="1">
                                                     </div>
                                                 </div>
                                             </div>
-
+                                            <input type="hidden" name="product_id" id="product_id"
+                                                value="{{ $product->id }}">
                                             <div class="col-sm-7">
-                                                <a href="#" class="btn btn-primary"><i
-                                                        class="fa fa-shopping-cart inner-right-vs"></i> ADD TO CART</a>
+                                                <button type="submit" onclick="addToCart()" class="btn btn-primary"><i
+                                                        class="fa fa-shopping-cart inner-right-vs"></i> ADD TO
+                                                    CART</button>
                                             </div>
 
 
