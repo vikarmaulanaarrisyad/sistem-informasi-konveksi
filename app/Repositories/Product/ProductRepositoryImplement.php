@@ -161,7 +161,7 @@ class ProductRepositoryImplement extends Eloquent implements ProductRepository
 
     private function handleCheckboxValues($data): array
     {
-        foreach (['hot_deals', 'featured', 'special_offer'] as $key) {
+        foreach (['hot_deals', 'featured', 'special_offer', 'special_deals'] as $key) {
             $data[$key] = isset($data[$key]) ? 1 : 0;
         }
         return $data;
