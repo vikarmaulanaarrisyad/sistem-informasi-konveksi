@@ -2,7 +2,8 @@
 
 use App\Http\Controllers\Frontend\{
     CartController,
-    IndexController
+    IndexController,
+    WishlistController
 };
 
 use App\Http\Controllers\{
@@ -19,7 +20,9 @@ use App\Http\Controllers\{
     SubCategoryController,
     SubSubCategoryController
 };
-
+use App\Http\Controllers\Admin\ShippingAreaController;
+use App\Http\Controllers\User\CartPageController;
+use App\Http\Controllers\User\UserCheckoutController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,27 +35,6 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::get('/', [IndexController::class, 'index']);
-Route::get('/user/logout', [IndexController::class, 'userLogout'])->name('user.logout');
-Route::get('/user/profile/edit', [IndexController::class, 'userProfileEdit'])->name('user.profile.edit');
-Route::post('/user/profile/update', [IndexController::class, 'userProfileUpdate'])->name('user.profile.update');
-Route::get('/user/change/password', [IndexController::class, 'changePassword'])->name('change.password');
-Route::post('/user/update/password', [IndexController::class, 'userUpdatePassword'])->name('user.update.password');
-Route::get('/detail/{id}/{slug}', [IndexController::class, 'detail']);
-Route::get('/product/tag/{tag}', [IndexController::class, 'tagProduct']);
-
-// frontend category
-Route::get('/category/product/{subcat_id}/{slug}', [IndexController::class, 'subcatProduct']);
-
-Route::get('/subsubcategory/product/{subsubcat_id}/{slug}', [IndexController::class, 'subsubcatProduct']);
-// routing get data by ajax
-Route::get('/product/view/modal/{id}', [IndexController::class, 'getProductModal']);
-
-// Route Cart
-Route::post('/cart/data/store/{id}', [CartController::class, 'addToCart']);
-Route::get('/product/mini/cart', [CartController::class, 'addMiniCart']);
-Route::get('/minicart/product-remove/{rowId}', [CartController::class, 'removeMiniCart']);
 
 
 Route::group(['middleware' => ['auth']], function () {
@@ -111,4 +93,51 @@ Route::group(['middleware' => ['auth']], function () {
     // Route : Sliders
     Route::get('/sliders/data', [SliderController::class, 'data'])->name('sliders.data');
     Route::resource('/sliders', SliderController::class);
+
+    // Shipping
+    Route::resource('/shipping', ShippingAreaController::class);
 });
+
+Route::get('/', [IndexController::class, 'index'])->name('home.index');
+Route::get('/user/logout', [IndexController::class, 'userLogout'])->name('user.logout');
+Route::get('/user/profile/edit', [IndexController::class, 'userProfileEdit'])->name('user.profile.edit');
+Route::post('/user/profile/update', [IndexController::class, 'userProfileUpdate'])->name('user.profile.update');
+Route::get('/user/change/password', [IndexController::class, 'changePassword'])->name('change.password');
+Route::post('/user/update/password', [IndexController::class, 'userUpdatePassword'])->name('user.update.password');
+Route::get('/detail/{id}/{slug}', [IndexController::class, 'detail']);
+Route::get('/product/tag/{tag}', [IndexController::class, 'tagProduct']);
+
+// frontend category
+Route::get('/category/product/{subcat_id}/{slug}', [IndexController::class, 'subcatProduct']);
+
+Route::get('/subsubcategory/product/{subsubcat_id}/{slug}', [IndexController::class, 'subsubcatProduct']);
+// routing get data by ajax
+Route::get('/product/view/modal/{id}', [IndexController::class, 'getProductModal']);
+
+
+Route::group(['prefix' => 'user', 'middleware' => ['auth', 'user'], 'namespace' => 'User'], function () {
+    Route::post('/add-to-wishlist/{product_id}', [WishlistController::class, 'store']);
+    Route::get('/wishlist', [WishlistController::class, 'viewWishlist'])->name('wishlist');
+    Route::get('/get-wishlist-product', [WishlistController::class, 'getWishlist']);
+    Route::get('/remove-wishlist/{id}', [WishlistController::class, 'removeWishlist']);
+});
+
+// Route Mini
+Route::post('/cart/data/store/{id}', [CartController::class, 'addToCart']);
+Route::get('/product/mini/cart', [CartController::class, 'addMiniCart']);
+Route::get('/minicart/product-remove/{rowId}', [CartController::class, 'removeMiniCart']);
+
+// Route : Mycart
+Route::get('/mycart', [CartPageController::class, 'index'])->name('mycart.index');
+Route::get('/get-mycart-product', [CartPageController::class, 'getMyCart'])->name('mycart.get_data');
+Route::get('/remove-mycart/{rowId}', [CartPageController::class, 'removeMyCart']);
+Route::get('/cart-increment/{rowId}', [CartPageController::class, 'incrementMyCart']);
+Route::get('/cart-decrement/{rowId}', [CartPageController::class, 'decrementMyCart']);
+
+// UserCheckout
+Route::get('/user/checkout', [UserCheckoutController::class, 'index'])->name('user.checkout');
+Route::post('/user/checkout/detail', [UserCheckoutController::class, 'detail'])->name('user.checkout.detail');
+Route::get('/user/checkout/province/search', [UserCheckoutController::class, 'searchProvince'])->name('user.checkout.searchProvince');
+Route::get('/user/checkout/regence/{province_id}/search', [UserCheckoutController::class, 'searchRegence'])->name('user.checkout.searchRegence');
+Route::get('/user/checkout/district/{regency_id}/search', [UserCheckoutController::class, 'searchDistrict'])->name('user.checkout.searchDistrict');
+Route::get('/user/checkout/village/{district_id}/search', [UserCheckoutController::class, 'searchVillage'])->name('user.checkout.searchVillage');

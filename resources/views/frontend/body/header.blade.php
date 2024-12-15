@@ -7,9 +7,10 @@
                     <div class="cnt-account">
                         <ul class="list-unstyled">
                             <li><a href="#"><i class="icon fa fa-user"></i>My Account</a></li>
-                            <li><a href="#"><i class="icon fa fa-heart"></i>Wishlist</a></li>
-                            <li><a href="#"><i class="icon fa fa-shopping-cart"></i>My Cart</a></li>
-                            <li><a href="#"><i class="icon fa fa-check"></i>Checkout</a></li>
+                            <li><a href="{{ route('wishlist') }}"><i class="icon fa fa-heart"></i>Wishlist</a></li>
+                            <li><a href="{{ route('mycart.index') }}"><i class="icon fa fa-shopping-cart"></i>My
+                                    Cart</a></li>
+                            <li><a href="{{ route('user.checkout') }}"><i class="icon fa fa-check"></i>Checkout</a></li>
 
                             @auth
                                 <li><a href="{{ route('dashboard') }}"><i class="icon fa fa-user"></i>User Profile</a></li>
@@ -161,7 +162,7 @@
                         <div class="navbar-collapse collapse" id="mc-horizontal-menu-collapse">
                             <div class="nav-outer">
                                 <ul class="nav navbar-nav">
-                                    <li class="active dropdown yamm-fw"> <a href="{{ url('/') }}"
+                                    <li class="active dropdown yamm-fw"> <a href="{{ route('home.index') }}"
                                             data-hover="dropdown" class="dropdown-toggle"
                                             data-toggle="dropdown">Home</a> </li>
 
@@ -185,7 +186,8 @@
                                                                             href="{{ url('/category/product/' . $sub->id . '/' . $sub->subcategory_slug) }}"></a>
 
 
-                                                                        <h2 class="title">{{ $sub->subcategory_name }}
+                                                                        <h2 class="title">
+                                                                            {{ $sub->subcategory_name }}
                                                                         </h2>
                                                                         <ul class="links">
                                                                             @foreach ($sub->subSubCategory as $subSub)

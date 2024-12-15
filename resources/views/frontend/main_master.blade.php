@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="{{ asset('/frontend') }}/assets/css/animate.min.css">
     <link rel="stylesheet" href="{{ asset('/frontend') }}/assets/css/rateit.css">
     <link rel="stylesheet" href="{{ asset('/frontend') }}/assets/css/bootstrap-select.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
     <!-- Icons/Glyphs -->
     <link rel="stylesheet" href="{{ asset('/frontend') }}/assets/css/font-awesome.css">
@@ -32,6 +33,34 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,400italic,600,600italic,700,700italic,800'
         rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+    <style>
+        .top-cart-row .dropdown-cart .dropdown-menu {
+            border: 1px solid #e1e1e1;
+            -webkit-border-radius: 0;
+            -moz-border-radius: 0;
+            border-radius: 0;
+            float: right;
+            left: auto;
+            min-width: 0;
+            padding: 24px 22px;
+            right: 0;
+            width: 270px !important;
+            -moz-box-shadow: none;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+        }
+
+        .cart-shopping-total {
+            float: right;
+            margin-top: 10px;
+            /* Opsional untuk memberikan jarak */
+        }
+
+        .checkout-box .checkout-steps .checkout-step-01 .already-registered-login button {
+            margin-top: 1px !important;
+        }
+    </style>
 </head>
 
 <body class="cnt-home">
@@ -120,6 +149,8 @@
     <script src="{{ asset('/frontend') }}/assets/js/wow.min.js"></script>
     <script src="{{ asset('/frontend') }}/assets/js/scripts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <script type="text/javascript">
         $.ajaxSetup({
             headers: {
@@ -235,9 +266,9 @@
                                                 </div>
                                             </div>
                                             <div class="col-xs-7">
-                                                <h3 class="name"><a href="index.php?page-detail">${value.name}</a>
+                                                <h3 class="name"><a href="#">${value.name}</a>
                                                 </h3>
-                                                <div class="price">Rp. ${value.price}</div>
+                                                <div class="price">Rp. ${value.price} * ${value.qty}</div>
                                             </div>
                                             <div class="col-xs-1 action"> <button type="submit" onclick="miniCartRemove(this.id)"  id="${value.rowId}" ><i class="fa fa-trash"></i></button> </div>
                                         </div>
@@ -269,12 +300,219 @@
                         icon: "success"
                     }).then(() => {
                         miniCart()
+                        cart()
                     });
 
                 }
             })
         }
+
+        // product wislist
+        function addToWislist(productId) {
+            $.ajax({
+                type: "POST",
+                url: "/user/add-to-wishlist/" + productId,
+                dataType: "json",
+                success: function(response) {
+                    if ($.isEmptyObject(response.error)) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: response.success,
+                            showConfirmButton: false,
+                            timer: 3000
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: response.error,
+                            showConfirmButton: false,
+                            timer: 3000
+                        })
+                    }
+                }
+            })
+        }
+
+        // Get data Wishlist
+        function getWishlist() {
+            $.ajax({
+                type: "GET",
+                url: '/user/get-wishlist-product',
+                dataType: 'json',
+                success: function(response) {
+                    let row = ""
+
+                    $.each(response, function(key, value) {
+                        row += `
+                              <tr>
+                                        <td class="col-md-2"><img src="/storage/${value.product.product_thumbnail}" alt="imga"></td>
+                                        <td class="col-md-7">
+                                            <div class="product-name"><a href="/detail/${value.product.id}/${value.product.product_slug}">${value.product.product_name}</a></div>
+                                            <div class="price">
+                                               ${value.product.discount_price == 0 ?
+                                                `${formatRupiah(value.product.selling_price)}` :
+                                                 `${formatRupiah(value.product.price_after_discount)} <span class="price-before-discount">${formatRupiah(value.product.selling_price)}</span>`
+                                            }
+                                            </div>
+                                        </td>
+                                        <td class="col-md-2">
+                                                      <button data-toggle="modal" id="${value.product.id}"
+                                                            onclick="productView(this.id)" data-target="#staticBackdrop"
+                                                            class="btn btn-primary icon" type="button"
+                                                            title="Add Cart"> Add To Cart
+                                                        </button>
+                                        </td>
+                                        <td class="col-md-1 close-btn">
+                                            <button type="submit" id="${value.id}" onclick="removeWishlist(this.id)" ><i class="fa fa-times"></i></button>
+                                        </td>
+                                    </tr>
+
+                        `
+                    })
+                    $('#getWishlist').html(row)
+                }
+            })
+        }
+
+        getWishlist();
+
+        // remove wishlist
+        function removeWishlist(id) {
+            $.ajax({
+                type: 'GET',
+                url: "/user/remove-wishlist/" + id,
+                dataType: 'json',
+                success: function(data) {
+                    Swal.fire({
+                        title: "Berhasil",
+                        text: data.success,
+                        showConfirmButton: false,
+                        timer: 3000,
+                        icon: "success"
+                    }).then(() => {
+                        getWishlist()
+                    });
+
+                }
+            })
+        }
+
+        // get MyCart
+        function cart() {
+            $.ajax({
+                type: "GET",
+                url: '/get-mycart-product',
+                dataType: 'json',
+                success: function(response) {
+                    let row = ""
+
+                    $.each(response.carts, function(key, value) {
+                        row += `
+                              <tr>
+                                        <td class="col-md-2"><img src="${value.options.image}" alt="imga" style="width:60px; height: 60px;"></td>
+                                        <td class="col-md-2">
+                                            <div class="product-name"><a href="#">${value.name}</a></div>
+                                        </td>
+
+                                        <td class="col-md-2">
+                                             <strong>
+                                              ${formatRupiah(value.price)}
+                                            </strong>
+                                        </td>
+
+                                        <td class="col-md-1">
+                                            ${value.options.color == null ? `<strong>.....</strong>` : `<strong>${value.options.color}</strong>` }
+                                        </td>
+
+                                        <td class="col-md-1">
+                                            ${value.options.size == 0 ? `<strong>.....</strong>` : `<strong>${value.options.size}</strong>` }
+                                        </td>
+
+                                        <td class="col-md-2">
+                                             <button class="btn btn-sm btn-success" id="${value.rowId}" onclick="cartIncrement(this.id)" >+</button>
+                                            <input type="text" value="${value.qty}" min="1" max="100" disabled style="width:30px; text-align:center">
+                                            ${value.qty > 1 ?
+                                            ` <button class="btn btn-sm btn-danger" id="${value.rowId}" onclick="cartDecrement(this.id)" >-</button>` :
+
+                                            `<button class="btn btn-sm btn-danger" disabled>-</button>`
+
+                                        }
+
+                                        </td>
+                                        <td class="col-md-2">
+                                            <strong>${formatRupiah(value.subtotal)}</strong>
+                                        </td>
+
+                                        <td class="col-md-2 close-btn">
+                                            <button type="submit" id="${value.rowId}" onclick="removeMyCart(this.id)" ><i class="fa fa-times"></i></button>
+                                        </td>
+                                    </tr>
+
+                        `
+                    })
+                    $('#getMyCart').html(row)
+                    $('#grandTotal').text(formatRupiah(response.cartTotal))
+                }
+            })
+        }
+
+        cart()
+
+        function removeMyCart(id) {
+            $.ajax({
+                type: 'GET',
+                url: "/remove-mycart/" + id,
+                dataType: 'json',
+                success: function(data) {
+                    Swal.fire({
+                        title: "Berhasil",
+                        text: data.success,
+                        showConfirmButton: false,
+                        timer: 3000,
+                        icon: "success"
+                    }).then(() => {
+                        cart()
+                        miniCart()
+                    });
+
+                }
+            })
+        }
+
+        // cart increment
+        function cartIncrement(rowId) {
+            $.ajax({
+                type: "GET",
+                url: "/cart-increment/" + rowId,
+                dataType: "json",
+                success: function(response) {
+                    cart()
+                    miniCart()
+                }
+            })
+        }
+
+        // cart decrement
+        function cartDecrement(rowId) {
+            $.ajax({
+                type: "GET",
+                url: "/cart-decrement/" + rowId,
+                dataType: "json",
+                success: function(response) {
+                    cart()
+                    miniCart()
+                }
+            })
+        }
+
+        function formatRupiah(number) {
+            return "Rp.  " + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
     </script>
+
+    @stack('script')
 </body>
 
 </html>
