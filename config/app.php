@@ -162,6 +162,7 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
+        AzisHapidin\IndoRegion\IndoRegionServiceProvider::class,
         /*
          * Application Service Providers...
          */

@@ -20,7 +20,9 @@ use App\Http\Controllers\{
     SubCategoryController,
     SubSubCategoryController
 };
+use App\Http\Controllers\Admin\ShippingAreaController;
 use App\Http\Controllers\User\CartPageController;
+use App\Http\Controllers\User\UserCheckoutController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -91,6 +93,9 @@ Route::group(['middleware' => ['auth']], function () {
     // Route : Sliders
     Route::get('/sliders/data', [SliderController::class, 'data'])->name('sliders.data');
     Route::resource('/sliders', SliderController::class);
+
+    // Shipping
+    Route::resource('/shipping', ShippingAreaController::class);
 });
 
 Route::get('/', [IndexController::class, 'index'])->name('home.index');
@@ -128,3 +133,11 @@ Route::get('/get-mycart-product', [CartPageController::class, 'getMyCart'])->nam
 Route::get('/remove-mycart/{rowId}', [CartPageController::class, 'removeMyCart']);
 Route::get('/cart-increment/{rowId}', [CartPageController::class, 'incrementMyCart']);
 Route::get('/cart-decrement/{rowId}', [CartPageController::class, 'decrementMyCart']);
+
+// UserCheckout
+Route::get('/user/checkout', [UserCheckoutController::class, 'index'])->name('user.checkout');
+Route::post('/user/checkout/detail', [UserCheckoutController::class, 'detail'])->name('user.checkout.detail');
+Route::get('/user/checkout/province/search', [UserCheckoutController::class, 'searchProvince'])->name('user.checkout.searchProvince');
+Route::get('/user/checkout/regence/{province_id}/search', [UserCheckoutController::class, 'searchRegence'])->name('user.checkout.searchRegence');
+Route::get('/user/checkout/district/{regency_id}/search', [UserCheckoutController::class, 'searchDistrict'])->name('user.checkout.searchDistrict');
+Route::get('/user/checkout/village/{district_id}/search', [UserCheckoutController::class, 'searchVillage'])->name('user.checkout.searchVillage');

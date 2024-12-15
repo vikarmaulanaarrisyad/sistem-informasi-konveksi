@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="{{ asset('/frontend') }}/assets/css/animate.min.css">
     <link rel="stylesheet" href="{{ asset('/frontend') }}/assets/css/rateit.css">
     <link rel="stylesheet" href="{{ asset('/frontend') }}/assets/css/bootstrap-select.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
     <!-- Icons/Glyphs -->
     <link rel="stylesheet" href="{{ asset('/frontend') }}/assets/css/font-awesome.css">
@@ -48,6 +49,16 @@
             -moz-box-shadow: none;
             -webkit-box-shadow: none;
             box-shadow: none;
+        }
+
+        .cart-shopping-total {
+            float: right;
+            margin-top: 10px;
+            /* Opsional untuk memberikan jarak */
+        }
+
+        .checkout-box .checkout-steps .checkout-step-01 .already-registered-login button {
+            margin-top: 1px !important;
         }
     </style>
 </head>
@@ -138,6 +149,8 @@
     <script src="{{ asset('/frontend') }}/assets/js/wow.min.js"></script>
     <script src="{{ asset('/frontend') }}/assets/js/scripts.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <script type="text/javascript">
         $.ajaxSetup({
             headers: {
@@ -424,9 +437,9 @@
                                             ` <button class="btn btn-sm btn-danger" id="${value.rowId}" onclick="cartDecrement(this.id)" >-</button>` :
 
                                             `<button class="btn btn-sm btn-danger" disabled>-</button>`
-                                            
+
                                         }
-                                           
+
                                         </td>
                                         <td class="col-md-2">
                                             <strong>${formatRupiah(value.subtotal)}</strong>
@@ -440,6 +453,7 @@
                         `
                     })
                     $('#getMyCart').html(row)
+                    $('#grandTotal').text(formatRupiah(response.cartTotal))
                 }
             })
         }
@@ -497,6 +511,8 @@
             return "Rp.  " + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
     </script>
+
+    @stack('script')
 </body>
 
 </html>
