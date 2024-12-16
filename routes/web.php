@@ -141,3 +141,4 @@ Route::get('/user/checkout/province/search', [UserCheckoutController::class, 'se
 Route::get('/user/checkout/regence/{province_id}/search', [UserCheckoutController::class, 'searchRegence'])->name('user.checkout.searchRegence');
 Route::get('/user/checkout/district/{regency_id}/search', [UserCheckoutController::class, 'searchDistrict'])->name('user.checkout.searchDistrict');
 Route::get('/user/checkout/village/{district_id}/search', [UserCheckoutController::class, 'searchVillage'])->name('user.checkout.searchVillage');
+Route::post('/checkout-store', [UserCheckoutController::class, 'checkoutStore'])->name('checkout.store');
