@@ -18,7 +18,8 @@ use App\Http\Controllers\{
     ProdukController,
     SliderController,
     SubCategoryController,
-    SubSubCategoryController
+    SubSubCategoryController,
+    UserOrderController
 };
 use App\Http\Controllers\Admin\ShippingAreaController;
 use App\Http\Controllers\User\CartPageController;
@@ -120,6 +121,11 @@ Route::group(['prefix' => 'user', 'middleware' => ['auth', 'user'], 'namespace' 
     Route::get('/wishlist', [WishlistController::class, 'viewWishlist'])->name('wishlist');
     Route::get('/get-wishlist-product', [WishlistController::class, 'getWishlist']);
     Route::get('/remove-wishlist/{id}', [WishlistController::class, 'removeWishlist']);
+
+    // Route:: User Order detail
+    Route::get('/my-order', [UserOrderController::class, 'index'])->name('user.order');
+    Route::get('/my-order/{id}/detail', [UserOrderController::class, 'orderDetail'])->name('user.order.detail');
+    Route::get('/invoice/{id}/download', [UserOrderController::class, 'downloadInvoice'])->name('user.order.invoice');
 });
 
 // Route Mini
