@@ -6,11 +6,13 @@
                 <div class="header-top-inner">
                     <div class="cnt-account">
                         <ul class="list-unstyled">
-                            <li><a href="#"><i class="icon fa fa-user"></i>My Account</a></li>
                             <li><a href="{{ route('wishlist') }}"><i class="icon fa fa-heart"></i>Wishlist</a></li>
                             <li><a href="{{ route('mycart.index') }}"><i class="icon fa fa-shopping-cart"></i>My
                                     Cart</a></li>
                             <li><a href="{{ route('user.checkout') }}"><i class="icon fa fa-check"></i>Checkout</a></li>
+                            <li><a href="{{ route('user.order') }}"><i class="icon fa fa-shopping-cart"></i>History
+                                    Order</a>
+                            </li>
 
                             @auth
                                 <li><a href="{{ route('dashboard') }}"><i class="icon fa fa-user"></i>User Profile</a></li>
@@ -22,29 +24,7 @@
                     </div>
                     <!-- /.cnt-account -->
 
-                    <div class="cnt-block">
-                        <ul class="list-unstyled list-inline">
-                            <li class="dropdown dropdown-small"> <a href="#" class="dropdown-toggle"
-                                    data-hover="dropdown" data-toggle="dropdown"><span class="value">USD </span><b
-                                        class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">USD</a></li>
-                                    <li><a href="#">INR</a></li>
-                                    <li><a href="#">GBP</a></li>
-                                </ul>
-                            </li>
-                            <li class="dropdown dropdown-small"> <a href="#" class="dropdown-toggle"
-                                    data-hover="dropdown" data-toggle="dropdown"><span class="value">English </span><b
-                                        class="caret"></b></a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">English</a></li>
-                                    <li><a href="#">French</a></li>
-                                    <li><a href="#">German</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                        <!-- /.list-unstyled -->
-                    </div>
+
                     <!-- /.cnt-cart -->
                     <div class="clearfix"></div>
                 </div>
@@ -69,30 +49,24 @@
                     <div class="col-xs-12 col-sm-12 col-md-7 top-search-holder">
                         <!-- /.contact-row -->
                         <!-- ============================================================= SEARCH AREA ============================================================= -->
-                        <div class="search-area">
-                            <form>
-                                <div class="control-group">
-                                    <ul class="categories-filter animate-dropdown">
-                                        <li class="dropdown"> <a class="dropdown-toggle" data-toggle="dropdown"
-                                                href="category.html">Categories <b class="caret"></b></a>
-                                            <ul class="dropdown-menu" role="menu">
-                                                <li class="menu-header">Computer</li>
-                                                <li role="presentation"><a role="menuitem" tabindex="-1"
-                                                        href="category.html">- Clothing</a></li>
-                                                <li role="presentation"><a role="menuitem" tabindex="-1"
-                                                        href="category.html">- Electronics</a></li>
-                                                <li role="presentation"><a role="menuitem" tabindex="-1"
-                                                        href="category.html">- Shoes</a></li>
-                                                <li role="presentation"><a role="menuitem" tabindex="-1"
-                                                        href="category.html">- Watches</a></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
-                                    <input class="search-field" placeholder="Search here..." />
-                                    <a class="search-button" href="#"></a>
-                                </div>
-                            </form>
+
+                        <!-- Marquee Effect -->
+                        <div class="marquee-wrapper ml-3">
+                            <marquee behavior="scroll" direction="left" class="search-marquee">
+                                <h1>
+                                    <span id="current-time"></span> |
+                                    <strong>Produk Terbaru: </strong>
+                                    @php
+                                        $latestProduct = App\Models\Product::where('discount_price', '!=', '0')
+                                            ->latest()
+                                            ->first();
+                                    @endphp
+                                    {{ $latestProduct ? $latestProduct->product_name . ' Harga ' . format_uang($latestProduct->price_after_discount) : 'Tidak ada produk tersedia' }}
+                                </h1>
+                            </marquee>
                         </div>
+
+
                         <!-- /.search-area -->
                         <!-- ============================================================= SEARCH AREA : END ============================================================= -->
                     </div>
@@ -113,19 +87,12 @@
                             <ul class="dropdown-menu">
                                 <li>
 
-
                                     <div id="miniCart"></div>
-
-
-
-
-
-
                                     <div class="clearfix cart-total">
                                         <div class="pull-right"> <span class="text">Sub Total :</span><span
                                                 class='price' id="cartSubTotal"></span> </div>
                                         <div class="clearfix"></div>
-                                        <a href="checkout.html"
+                                        <a href="{{ route('user.checkout') }}"
                                             class="btn btn-upper btn-primary btn-block m-t-20">Checkout</a>
                                     </div>
                                     <!-- /.cart-total-->
@@ -172,8 +139,8 @@
 
                                     @if ($categories->isNotEmpty())
                                         @foreach ($categories as $cat)
-                                            <li class="dropdown yamm mega-menu"> <a href="#"
-                                                    data-hover="dropdown" class="dropdown-toggle"
+                                            <li class="dropdown yamm mega-menu"> <a href="#" data-hover="dropdown"
+                                                    class="dropdown-toggle"
                                                     data-toggle="dropdown">{{ $cat->category_name }}</a>
                                                 <ul class="dropdown-menu container">
                                                     <li>

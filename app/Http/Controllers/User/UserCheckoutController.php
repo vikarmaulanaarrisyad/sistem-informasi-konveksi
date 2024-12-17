@@ -61,7 +61,6 @@ class UserCheckoutController extends Controller
         $address = $request->address;
         $notes = $request->notes;
 
-
         $orderId = Order::insertGetId([
             'user_id' => Auth::id(),
             'province_id' => $request->province_id,

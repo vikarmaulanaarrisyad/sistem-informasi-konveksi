@@ -1,5 +1,5 @@
   <footer id="footer" class="footer color-bg">
-      <div class="footer-bottom">
+      {{--  <div class="footer-bottom">
           <div class="container">
               <div class="row">
                   <div class="col-xs-12 col-sm-6 col-md-3">
@@ -96,10 +96,10 @@
                   </div>
               </div>
           </div>
-      </div>
+      </div>  --}}
       <div class="copyright-bar">
           <div class="container">
-              <div class="col-xs-12 col-sm-6 no-padding social">
+              {{--  <div class="col-xs-12 col-sm-6 no-padding social">
                   <ul class="link">
                       <li class="fb pull-left"><a target="_blank" rel="nofollow" href="#" title="Facebook"></a>
                       </li>
@@ -116,7 +116,7 @@
                       <li class="youtube pull-left"><a target="_blank" rel="nofollow" href="#"
                               title="Youtube"></a></li>
                   </ul>
-              </div>
+              </div>  --}}
               <div class="col-xs-12 col-sm-6 no-padding">
                   <div class="clearfix payment-methods">
                       <ul>
