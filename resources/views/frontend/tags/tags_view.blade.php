@@ -74,100 +74,18 @@
 
 
                             <!-- ============================================== PRICE SILDER============================================== -->
-                            <div class="sidebar-widget wow fadeInUp animated"
-                                style="visibility: visible; animation-name: fadeInUp;">
-                                <div class="widget-header">
-                                    <h4 class="widget-title">Price Slider</h4>
-                                </div>
-                                <div class="sidebar-widget-body m-t-10">
-                                    <div class="price-range-holder"> <span class="min-max"> <span
-                                                class="pull-left">$200.00</span> <span class="pull-right">$800.00</span>
-                                        </span>
-                                        <input type="text" id="amount"
-                                            style="border:0; color:#666666; font-weight:bold;text-align:center;">
-                                        <div class="slider slider-horizontal" id="">
-                                            <div class="slider-track">
-                                                <div class="slider-selection" style="left: 16.6667%; width: 50%;"></div>
-                                                <div class="slider-handle min-slider-handle" tabindex="0"
-                                                    style="left: 16.6667%;"></div>
-                                                <div class="slider-handle max-slider-handle" tabindex="0"
-                                                    style="left: 66.6667%;"></div>
-                                            </div>
-
-                                            <div class="tooltip tooltip-main top"
-                                                style="left: 41.6667%; margin-left: -35px;">
-                                                <div class="tooltip-arrow"></div>
-                                                <div class="tooltip-inner">200 : 500</div>
-                                            </div>
-                                        </div>
-
-                                    </div><input type="text" class="price-slider" value="200,500" data="value: '200,500'"
-                                        style="display: none;">
-                                </div>
-                                <!-- /.price-range-holder -->
-                                <a href="#" class="lnk btn btn-primary">Show Now</a>
-                            </div>
                             <!-- /.sidebar-widget-body -->
                         </div>
                         <!-- /.sidebar-widget -->
                         <!-- ============================================== PRICE SILDER : END ============================================== -->
 
                         <!-- ============================================== MANUFACTURES============================================== -->
-                        <div class="sidebar-widget wow fadeInUp animated"
-                            style="visibility: visible; animation-name: fadeInUp;">
-                            <div class="widget-header">
-                                <h4 class="widget-title">Manufactures</h4>
-                            </div>
-                            <div class="sidebar-widget-body">
-                                <ul class="list">
-                                    <li><a href="#">Forever 18</a></li>
-                                    <li><a href="#">Nike</a></li>
-                                    <li><a href="#">Dolce &amp; Gabbana</a></li>
-                                    <li><a href="#">Alluare</a></li>
-                                    <li><a href="#">Chanel</a></li>
-                                    <li><a href="#">Other Brand</a></li>
-                                </ul>
-                                <!--<a href="#" class="lnk btn btn-primary">Show Now</a>-->
-                            </div>
-                            <!-- /.sidebar-widget-body -->
-                        </div>
-                        <!-- /.sidebar-widget -->
+
                         <!-- ============================================== MANUFACTURES: END ============================================== -->
 
-                        <!-- ============================================== COLOR============================================== -->
-                        <div class="sidebar-widget wow fadeInUp animated"
-                            style="visibility: visible; animation-name: fadeInUp;">
-                            <div class="widget-header">
-                                <h4 class="widget-title">Colors</h4>
-                            </div>
-                            <div class="sidebar-widget-body">
-                                <ul class="list">
-                                    <li><a href="#">Red</a></li>
-                                    <li><a href="#">Blue</a></li>
-                                    <li><a href="#">Yellow</a></li>
-                                    <li><a href="#">Pink</a></li>
-                                    <li><a href="#">Brown</a></li>
-                                    <li><a href="#">Teal</a></li>
-                                </ul>
-                            </div>
-                            <!-- /.sidebar-widget-body -->
-                        </div>
-                        <!-- /.sidebar-widget -->
-                        <!-- ============================================== COLOR: END ============================================== -->
 
                         <!-- ============================================== COMPARE============================================== -->
-                        <div class="sidebar-widget wow fadeInUp outer-top-vs animated"
-                            style="visibility: visible; animation-name: fadeInUp;">
-                            <h3 class="section-title">Compare products</h3>
-                            <div class="sidebar-widget-body">
-                                <div class="compare-report">
-                                    <p>You have no <span>item(s)</span> to compare</p>
-                                </div>
-                                <!-- /.compare-report -->
-                            </div>
-                            <!-- /.sidebar-widget-body -->
-                        </div>
-                        <!-- /.sidebar-widget -->
+
                         <!-- ============================================== COMPARE: END ============================================== -->
 
                         <!-- ============================================== PRODUCT TAGS ============================================== -->
@@ -186,7 +104,7 @@
                 <div class="col-md-9">
                     <!-- ========================================== SECTION – HERO ========================================= -->
 
-                    <div id="category" class="category-carousel hidden-xs">
+                    {{--  <div id="category" class="category-carousel hidden-xs">
                         <div class="item">
                             <div class="image">
                                 <img src="{{ asset('frontend/assets/images/banners/cat-banner-1.jpg') }}" alt=""
@@ -201,7 +119,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>  --}}
 
 
                     <div class="clearfix filters-container m-t-10">
@@ -223,8 +141,7 @@
                                     <div class="lbl-cnt"> <span class="lbl">Sort by</span>
                                         <div class="fld inline">
                                             <div class="dropdown dropdown-small dropdown-med dropdown-white inline">
-                                                <button data-toggle="dropdown" type="button"
-                                                    class="btn dropdown-toggle">
+                                                <button data-toggle="dropdown" type="button" class="btn dropdown-toggle">
                                                     Position <span class="caret"></span>
                                                 </button>
                                                 <ul role="menu" class="dropdown-menu">
@@ -244,8 +161,7 @@
                                     <div class="lbl-cnt"> <span class="lbl">Show</span>
                                         <div class="fld inline">
                                             <div class="dropdown dropdown-small dropdown-med dropdown-white inline">
-                                                <button data-toggle="dropdown" type="button"
-                                                    class="btn dropdown-toggle"> 1
+                                                <button data-toggle="dropdown" type="button" class="btn dropdown-toggle"> 1
                                                     <span class="caret"></span> </button>
                                                 <ul role="menu" class="dropdown-menu">
                                                     <li role="presentation"><a href="#">1</a></li>
@@ -350,18 +266,27 @@
                                                             <div class="action">
                                                                 <ul class="list-unstyled">
                                                                     <li class="add-cart-button btn-group">
-                                                                        <button class="btn btn-primary icon"
-                                                                            data-toggle="dropdown" type="button"> <i
-                                                                                class="fa fa-shopping-cart"></i> </button>
+                                                                        <button data-toggle="modal"
+                                                                            id="{{ $product->id }}"
+                                                                            onclick="productView(this.id)"
+                                                                            data-target="#staticBackdrop"
+                                                                            class="btn btn-primary icon" type="button"
+                                                                            title="Add Cart"> <i
+                                                                                class="fa fa-shopping-cart"></i>
+                                                                        </button>
+
                                                                         <button class="btn btn-primary cart-btn"
-                                                                            type="button">Add to cart</button>
+                                                                            type="button">Add to
+                                                                            cart</button>
                                                                     </li>
-                                                                    <li class="lnk wishlist"> <a class="add-to-cart"
-                                                                            href="detail.html" title="Wishlist"> <i
-                                                                                class="icon fa fa-heart"></i> </a> </li>
-                                                                    <li class="lnk"> <a class="add-to-cart"
-                                                                            href="detail.html" title="Compare"> <i
-                                                                                class="fa fa-signal"></i> </a>
+
+                                                                    <li class="add-cart-button btn-group"> <button
+                                                                            type="submit" onclick="addToWislist(this.id)"
+                                                                            id="{{ $product->id }}"
+                                                                            data-toggle="tooltip"
+                                                                            class="btn btn-primary icon" title="Wishlist">
+                                                                            <i class="icon fa fa-heart"></i>
+                                                                        </button>
                                                                     </li>
                                                                 </ul>
                                                             </div>
@@ -438,21 +363,29 @@
                                                                     <div class="action">
                                                                         <ul class="list-unstyled">
                                                                             <li class="add-cart-button btn-group">
-                                                                                <button class="btn btn-primary icon"
-                                                                                    data-toggle="dropdown" type="button">
-                                                                                    <i class="fa fa-shopping-cart"></i>
+                                                                                <button data-toggle="modal"
+                                                                                    id="{{ $product->id }}"
+                                                                                    onclick="productView(this.id)"
+                                                                                    data-target="#staticBackdrop"
+                                                                                    class="btn btn-primary icon"
+                                                                                    type="button" title="Add Cart"> <i
+                                                                                        class="fa fa-shopping-cart"></i>
                                                                                 </button>
+
                                                                                 <button class="btn btn-primary cart-btn"
-                                                                                    type="button">Add to cart</button>
+                                                                                    type="button">Add to
+                                                                                    cart</button>
                                                                             </li>
-                                                                            <li class="lnk wishlist"> <a
-                                                                                    class="add-to-cart" href="detail.html"
-                                                                                    title="Wishlist"> <i
-                                                                                        class="icon fa fa-heart"></i> </a>
-                                                                            </li>
-                                                                            <li class="lnk"> <a class="add-to-cart"
-                                                                                    href="detail.html" title="Compare"> <i
-                                                                                        class="fa fa-signal"></i> </a>
+
+                                                                            <li class="add-cart-button btn-group"> <button
+                                                                                    type="submit"
+                                                                                    onclick="addToWislist(this.id)"
+                                                                                    id="{{ $product->id }}"
+                                                                                    data-toggle="tooltip"
+                                                                                    class="btn btn-primary icon"
+                                                                                    title="Wishlist">
+                                                                                    <i class="icon fa fa-heart"></i>
+                                                                                </button>
                                                                             </li>
                                                                         </ul>
                                                                     </div>

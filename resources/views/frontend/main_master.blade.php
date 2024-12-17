@@ -60,6 +60,18 @@
         .checkout-box .checkout-steps .checkout-step-01 .already-registered-login button {
             margin-top: 1px !important;
         }
+
+        .search-marquee {
+            font-size: 16px;
+            color: #b2bc20;
+            font-weight: normal;
+            padding: 5px;
+        }
+
+        #current-time {
+            font-weight: bold;
+            color: #ffff;
+        }
     </style>
 </head>
 
@@ -510,6 +522,34 @@
         function formatRupiah(number) {
             return "Rp.  " + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
+    </script>
+
+    <script>
+        // Function to update the time every second
+        // Fungsi untuk memperbarui waktu setiap detik
+        function updateTime() {
+            const currentTimeElement = document.getElementById("current-time");
+            const now = new Date();
+
+            // Daftar nama hari dalam bahasa Indonesia
+            const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+            const day = days[now.getDay()];
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+
+            // Format waktu dalam format jam:menit:detik
+            const timeString = `${day}, ${hours}:${minutes}:${seconds}`;
+
+            // Menampilkan waktu pada elemen dengan id "current-time"
+            currentTimeElement.textContent = timeString;
+        }
+
+        // Memperbarui waktu setiap detik
+        setInterval(updateTime, 1000);
+
+        // Panggil pertama kali untuk menampilkan waktu secara langsung
+        updateTime();
     </script>
 
     @stack('script')

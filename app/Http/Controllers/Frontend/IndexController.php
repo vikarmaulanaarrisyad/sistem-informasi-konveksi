@@ -18,23 +18,56 @@ class IndexController extends Controller
 {
     public function index()
     {
-        $sliders = Slider::where('status', 1)->limit(3)->get();
-        $categories = Category::with(['subCategory.subSubCategory'])->orderBy('category_name', 'ASC')->get();
-        $products = Product::where('status', 1)->orderBy('id', 'DESC')->limit(6)->get();
-        $featured = Product::where('featured', 1)->orderBy('id', 'DESC')->limit(6)->get();
-        $hotDeals = Product::where('hot_deals', 1)->orderBy('id', 'DESC')->limit(3)->get();
-        $specialOffer = Product::where('special_offer', 1)->orderBy('id', 'DESC')->limit(3)->get();
-        $specialDeals = Product::where('special_deals', 1)->orderBy('id', 'DESC')->limit(3)->get();
+        // Ambil sliders dan brands
+        $sliders = Slider::where('status', 1)->limit(3)->get() ?? collect();
+        $brands = Brand::all() ?? collect();
 
-        $skip_category_0 = Category::skip(0)->first();
-        $skip_product_0 = Product::where('status', 1)->where('category_id', $skip_category_0->id)->orderBy('id', 'DESC')->get();
+        // Eager Load categories dengan relasi subCategory dan subSubCategory
+        $categories = Category::with(['subCategory.subSubCategory'])
+            ->orderBy('category_name', 'ASC')
+            ->get() ?? collect();
 
-        $skip_category_1 = Category::skip(1)->first();
-        $skip_product_1 = Product::where('status', 1)->where('category_id', $skip_category_1->id)->orderBy('id', 'DESC')->get();
+        // Ambil produk dengan kondisi spesifik, dengan eager load relasi yang mungkin dipakai
+        $products = Product::with(['category', 'brand'])
+            ->where('status', 1)
+            ->orderBy('id', 'DESC')
+            ->limit(6)->get() ?? collect();
 
-        $skip_brand_5 = Brand::skip(1)->first();
-        $skip_product_5 = Product::where('status', 1)->where('brand_id', $skip_brand_5->id)->orderBy('id', 'DESC')->get();
+        $featured = Product::with(['category', 'brand'])
+            ->where('featured', 1)
+            ->orderBy('id', 'DESC')
+            ->limit(6)->get() ?? collect();
 
+        $hotDeals = Product::with(['category', 'brand'])
+            ->where('hot_deals', 1)
+            ->orderBy('id', 'DESC')
+            ->limit(3)->get() ?? collect();
+
+        $specialOffer = Product::with(['category', 'brand'])
+            ->where('special_offer', 1)
+            ->orderBy('id', 'DESC')
+            ->limit(3)->get() ?? collect();
+
+        $specialDeals = Product::with(['category', 'brand'])
+            ->where('special_deals', 1)
+            ->orderBy('id', 'DESC')
+            ->limit(3)->get() ?? collect();
+
+        // Optimalkan skip category dan produk
+        $skippedCategories = Category::with('product')
+            ->skip(0)->take(2)->get() ?? collect();
+
+        $skip_category_0 = $skippedCategories->get(0) ?? null;
+        $skip_product_0 = $skip_category_0->products ?? collect();
+
+        $skip_category_1 = $skippedCategories->get(1) ?? null;
+        $skip_product_1 = $skip_category_1->products ?? collect();
+
+        // Optimalkan skip brand dan produk
+        $skip_brand_5 = Brand::skip(1)->first() ?? null;
+        $skip_product_5 = $skip_brand_5->products ?? collect();
+
+        // Return view dengan variabel
         return view('frontend.index', compact([
             'sliders',
             'categories',
@@ -48,7 +81,8 @@ class IndexController extends Controller
             'skip_category_1',
             'skip_product_1',
             'skip_brand_5',
-            'skip_product_5'
+            'skip_product_5',
+            'brands',
         ]));
     }
 
