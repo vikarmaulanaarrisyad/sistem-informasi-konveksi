@@ -28,12 +28,12 @@
 
                     <div class="form-group">
                         <label for="short_descp">Deskripsi Singkat</label>
-                        <textarea id="short_descp" class="form-control" rows="3" disabled></textarea>
+                        <textarea id="short_descp" class="form-control" rows="6" disabled></textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="long_descp">Deskripsi Lengkap</label>
-                        <textarea id="long_descp" class="form-control" rows="3" disabled></textarea>
+                        <textarea id="long_descp" class="form-control" rows="30" disabled></textarea>
                     </div>
 
                     <div class="row">

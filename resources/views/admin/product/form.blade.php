@@ -94,8 +94,8 @@
         <div class="col-md-6 col-12">
             <div class="form-group">
                 <label for="discount_price">Diskon %</label>
-                <input type="text" class="form-control" name="discount_price" id="discount_price" autocomplete="off"
-                    min="0" value="0.0" oninput="calculateDiscountPrice()" placeholder="0.0">
+                <input type="number" class="form-control" name="discount_price" id="discount_price" autocomplete="off"
+                    min="0" oninput="calculateDiscountPrice()" placeholder="0">
             </div>
         </div>
 
@@ -121,23 +121,6 @@
                 <textarea class="form-control" name="long_descp" id="long_descp"></textarea>
             </div>
         </div>
-
-        <!-- Image Upload -->
-        {{--  <div class="col-md-12 col-12">
-            <div class="form-group">
-                <label for="product_thumbnail">Thumbnail Produk</label>
-                <input type="file" class="form-control" name="product_thumbnail" id="product_thumbnail"
-                    value="product_thumbnail.jpg">
-            </div>
-        </div>
-
-        <div class="col-md-12 col-12">
-            <div class="form-group">
-                <label for="photo_name">Upload Gambar Produk</label>
-                <input type="file" class="form-control photo_name" name="photo_name[]" id="photo_name"
-                    accept="image/*" multiple>
-            </div>
-        </div>  --}}
 
         <!-- Image Upload -->
         <div class="col-md-12 col-12">

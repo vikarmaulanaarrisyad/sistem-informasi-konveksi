@@ -42,6 +42,18 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
+    // Role Admin
+    Route::group(['middleware' => ['role:admin']], function () {
+        Route::prefix('admin')->group(function () {
+            // Route : Product
+            Route::controller(ProductController::class)->group(function () {
+                Route::get('/products/data', 'data')->name('products.data');
+                Route::get('/products/detail/{id}', 'detail')->name('products.detail');
+            });
+            Route::resource('/products', ProductController::class);
+        });
+    });
+
     // Route : Layanan
     Route::get('/layanan/data', [LayananController::class, 'data'])->name('layanan.data');
     Route::resource('/layanan', LayananController::class)->except('create', 'edit');
@@ -86,10 +98,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/subsubcategory/search/{id}', [SubSubCategoryController::class, 'SubSubCategorySearch'])->name('subsubcategory.search');
     Route::resource('/subsubcategory', SubSubCategoryController::class)->except('create', 'edit');
 
-    // Route : Product
-    Route::get('/products/data', [ProductController::class, 'data'])->name('products.data');
-    Route::get('/products/detail/{id}', [ProductController::class, 'detail'])->name('products.detail');
-    Route::resource('/products', ProductController::class);
 
     // Route : Sliders
     Route::get('/sliders/data', [SliderController::class, 'data'])->name('sliders.data');
@@ -98,6 +106,8 @@ Route::group(['middleware' => ['auth']], function () {
     // Shipping
     Route::resource('/shipping', ShippingAreaController::class);
 });
+
+
 
 Route::get('/', [IndexController::class, 'index'])->name('home.index');
 Route::get('/user/logout', [IndexController::class, 'userLogout'])->name('user.logout');

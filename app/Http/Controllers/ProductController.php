@@ -32,6 +32,8 @@ class ProductController extends Controller
             ->addIndexColumn()
             ->editColumn('product_thumbnail', fn($q) => $this->renderImageColumn($q))
             ->editColumn('selling_price', fn($q) => $this->renderSellingPriceColumn($q))
+            ->editColumn('discount_price', fn($q) => $this->renderDiscountPriceColumn($q))
+            ->editColumn('price_after_discount', fn($q) => $this->renderPriceAfterDiscountColumn($q))
             ->editColumn('status', fn($q) => $this->renderStatusColumn($q))
             ->editColumn('aksi', fn($q) => $this->renderActionButtons($q))
             ->escapeColumns([])
@@ -162,5 +164,21 @@ class ProductController extends Controller
     protected function renderSellingPriceColumn($q)
     {
         return format_uang($q->selling_price);
+    }
+
+    /**
+     * Render status column for DataTables.
+     */
+    protected function renderPriceAfterDiscountColumn($q)
+    {
+        return format_uang($q->discount_price == 0 ? $q->selling_price : $q->price_after_discount);
+    }
+
+    /**
+     * Render status column for DataTables.
+     */
+    protected function renderDiscountPriceColumn($q)
+    {
+        return $q->discount_price . '%';
     }
 }

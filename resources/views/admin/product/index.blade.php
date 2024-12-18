@@ -29,6 +29,8 @@
                                     <th>Nama Produk</th>
                                     <th>Stok</th>
                                     <th>Harga</th>
+                                    <th>Diskon</th>
+                                    <th>Harga Diskon</th>
                                     <th>Status</th>
                                     <th>Aksi</th>
                                 </x-slot>
@@ -49,6 +51,54 @@
         let table;
         let modal = '#modal-form';
         let button = '#submitBtn';
+
+        table = $('.table_product').DataTable({
+            processing: true,
+            serverSide: true,
+            autoWidth: false,
+            responsive: true,
+            ajax: {
+                url: '{{ route('products.data') }}'
+            },
+            columns: [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'product_thumbnail'
+                },
+                {
+                    data: 'product_code'
+                },
+                {
+                    data: 'product_name'
+                },
+                {
+                    data: 'product_qty'
+                },
+                {
+                    data: 'selling_price'
+                },
+                {
+                    data: 'discount_price'
+                },
+                {
+                    data: 'price_after_discount'
+                },
+                {
+                    data: 'status'
+                },
+                {
+                    data: 'aksi',
+                    name: 'aksi',
+                    orderable: false,
+                    searchable: false
+                },
+            ]
+        });
+
 
         $(function() {
             $('body').addClass('sidebar-collapse sidebar-mini');
@@ -200,47 +250,6 @@
                     $('.subsubcategory_id').val(null).trigger('change').prop('disabled', true);
                 }
             });
-        });
-
-        table = $('.table_product').DataTable({
-            processing: true,
-            serverSide: true,
-            autoWidth: false,
-            responsive: true,
-            ajax: {
-                url: '{{ route('products.data') }}'
-            },
-            columns: [{
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex',
-                    orderable: false,
-                    searchable: false
-                },
-                {
-                    data: 'product_thumbnail'
-                },
-                {
-                    data: 'product_code'
-                },
-                {
-                    data: 'product_name'
-                },
-                {
-                    data: 'product_qty'
-                },
-                {
-                    data: 'selling_price'
-                },
-                {
-                    data: 'status'
-                },
-                {
-                    data: 'aksi',
-                    name: 'aksi',
-                    orderable: false,
-                    searchable: false
-                },
-            ]
         });
 
         // fungsi tambah data baru
@@ -528,15 +537,12 @@
 
     <script>
         function calculateDiscountPrice() {
-            var sellingPrice = parseFloat(document.getElementById('selling_price').value.replace(/\./g, '').replace(',',
-                '.')) || 0;
-
-            var discountPercentage = document.getElementById('discount_price').value || 0;
-            // Calculate the discount amount
-            var discountAmount = (sellingPrice * discountPercentage) / 100;
+            const sellingPrice = $('[name="selling_price"]').val().replace(/\./g, '');
+            const discountPercentage = $('[name="discount_price"]').val();
+            const discountAmount = (sellingPrice * discountPercentage) / 100;
 
             // Calculate the price after discount
-            var priceAfterDiscount = sellingPrice - discountAmount;
+            const priceAfterDiscount = sellingPrice - discountAmount;
 
             // Format the result and display it
             document.getElementById('price_after_discount').value = formatCurrency(priceAfterDiscount);
