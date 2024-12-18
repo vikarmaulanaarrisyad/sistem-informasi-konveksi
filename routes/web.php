@@ -7,21 +7,23 @@ use App\Http\Controllers\Frontend\{
 };
 
 use App\Http\Controllers\{
-    BrandController,
-    CategoryController,
     DashboardController,
-    KategoriController,
-    LayananController,
     PembelianController,
     PesananController,
-    ProductController,
-    ProdukController,
-    SliderController,
-    SubCategoryController,
-    SubSubCategoryController,
     UserOrderController
 };
-use App\Http\Controllers\Admin\ShippingAreaController;
+
+use App\Http\Controllers\Admin\{
+    AdminBrandController,
+    AdminCategoryController,
+    AdminCustomOrderController,
+    AdminLayananController,
+    AdminOrderController,
+    AdminProductController,
+    AdminSliderController,
+    AdminSubCategoryController,
+    AdminSubSubCategoryController,
+};
 use App\Http\Controllers\User\CartPageController;
 use App\Http\Controllers\User\UserCheckoutController;
 use Illuminate\Support\Facades\Route;
@@ -44,70 +46,109 @@ Route::group(['middleware' => ['auth']], function () {
 
     // Role Admin
     Route::group(['middleware' => ['role:admin']], function () {
-        Route::prefix('admin')->group(function () {
-            // Route : Product
-            Route::controller(ProductController::class)->group(function () {
-                Route::get('/products/data', 'data')->name('products.data');
-                Route::get('/products/detail/{id}', 'detail')->name('products.detail');
+        Route::prefix('admin')->as('admin.')->group(function () {
+            // Route : Layanan
+            Route::controller(AdminLayananController::class)->prefix('layanan')->as('layanan.')->group(function () {
+                Route::get('/data', 'data')->name('data');
+                Route::get('/', 'index')->name('index');
+                Route::post('/', 'store')->name('store');
+                Route::get('/{id}', 'show')->name('show');
+                Route::put('/{id}', 'update')->name('update');
+                Route::delete('/{id}', 'destroy')->name('destroy');
+                Route::get('/detail/{id}', 'detail')->name('detail');
             });
-            Route::resource('/products', ProductController::class);
+
+            // Route : Brand
+            Route::controller(AdminBrandController::class)->prefix('brands')->as('brands.')->group(function () {
+                Route::get('/data', 'data')->name('data');
+                Route::get('/search', 'brandSearch')->name('brandSearch');
+                Route::get('/', 'index')->name('index');
+                Route::post('/', 'store')->name('store');
+                Route::get('/{id}', 'show')->name('show');
+                Route::put('/{id}', 'update')->name('update');
+                Route::delete('/{id}', 'destroy')->name('destroy');
+            });
+
+            // Route : Category
+            Route::controller(AdminCategoryController::class)->prefix('category')->as('category.')->group(function () {
+                Route::get('/data', 'data')->name('data');
+                Route::get('/search', 'categorySearch')->name('categorySearch');
+                Route::get('/', 'index')->name('index');
+                Route::post('/', 'store')->name('store');
+                Route::get('/{id}', 'show')->name('show');
+                Route::put('/{id}', 'update')->name('update');
+                Route::delete('/{id}', 'destroy')->name('destroy');
+            });
+
+            // Route : SubCategory
+            Route::controller(AdminSubCategoryController::class)->prefix('subcategory')->as('subcategory.')->group(function () {
+                Route::get('/data', 'data')->name('data');
+                Route::get('/search', 'subCategorySearch')->name('subCategorySearch');
+                Route::get('/', 'index')->name('index');
+                Route::post('/', 'store')->name('store');
+                Route::get('/{id}', 'show')->name('show');
+                Route::put('/{id}', 'update')->name('update');
+                Route::delete('/{id}', 'destroy')->name('destroy');
+            });
+
+            // Route : SubSubCategory
+            Route::controller(AdminSubSubCategoryController::class)->prefix('subsubcategory')->as('subsubcategory.')->group(function () {
+                Route::get('/data', 'data')->name('data');
+                Route::get('/search', 'subSubCategorySearch')->name('subSubCategorySearch');
+                Route::get('/', 'index')->name('index');
+                Route::post('/', 'store')->name('store');
+                Route::get('/{id}', 'show')->name('show');
+                Route::put('/{id}', 'update')->name('update');
+                Route::delete('/{id}', 'destroy')->name('destroy');
+            });
+
+            // Route : Product
+            Route::controller(AdminProductController::class)->prefix('products')->as('products.')->group(function () {
+                Route::get('/data', 'data')->name('data');
+                Route::get('/', 'index')->name('index');
+                Route::post('/', 'store')->name('store');
+                Route::get('/{id}', 'show')->name('show');
+                Route::put('/{id}', 'update')->name('update');
+                Route::delete('/{id}', 'destroy')->name('destroy');
+                Route::get('/detail/{id}', 'detail')->name('detail');
+            });
+
+            // Route : Slider
+            Route::controller(AdminSliderController::class)->prefix('slider')->as('slider.')->group(function () {
+                Route::get('/data', 'data')->name('data');
+                Route::get('/', 'index')->name('index');
+                Route::post('/', 'store')->name('store');
+                Route::get('/{id}', 'show')->name('show');
+                Route::put('/{id}', 'update')->name('update');
+                Route::delete('/{id}', 'destroy')->name('destroy');
+            });
+
+            // Route : Order
+            Route::controller(AdminOrderController::class)->prefix('orders')->as('orders.')->group(function () {
+                Route::get('/data', 'data')->name('data');
+                Route::get('/', 'index')->name('index');
+                Route::post('/', 'store')->name('store');
+                Route::get('/{id}', 'show')->name('show');
+                Route::put('/{id}', 'update')->name('update');
+                Route::delete('/{id}', 'destroy')->name('destroy');
+                Route::get('/detail/{id}', 'detail')->name('detail');
+                Route::get('/invoice/{id}/download', 'download')->name('download');
+            });
+
+            // Route : CustomOrder
+            Route::controller(AdminCustomOrderController::class)->prefix('customorders')->as('customorders.')->group(function () {
+                Route::get('/data', 'data')->name('data');
+                Route::get('/', 'index')->name('index');
+                Route::post('/', 'store')->name('store');
+                Route::get('/{id}', 'show')->name('show');
+                Route::put('/{id}', 'update')->name('update');
+                Route::delete('/{id}', 'destroy')->name('destroy');
+                Route::get('/detail/{id}', 'detail')->name('detail');
+                Route::get('/invoice/{id}/download', 'download')->name('download');
+            });
         });
     });
-
-    // Route : Layanan
-    Route::get('/layanan/data', [LayananController::class, 'data'])->name('layanan.data');
-    Route::resource('/layanan', LayananController::class)->except('create', 'edit');
-
-    // Route : Kateogri
-    Route::get('/kategori/data', [KategoriController::class, 'data'])->name('kategori.data');
-    Route::get('kategori/search', [KategoriController::class, 'search'])->name('kategori.search');
-    Route::resource('/kategori', KategoriController::class);
-
-    // Route : Produk
-    Route::get('/produk/data', [ProdukController::class, 'data'])->name('produk.data');
-    Route::resource('/produk', ProdukController::class);
-
-    // Route : Pesanan
-    Route::get('/pesanan/data', [PesananController::class, 'data'])->name('pesanan.data');
-    Route::post('/pesanan/update-status', [PesananController::class, 'updateStatus'])->name('pesanan.updateStatus');
-    Route::get('/pesanan/{id}/detail', [PesananController::class, 'detail'])->name('pesanan.detail');
-    Route::resource('/pesanan', PesananController::class);
-
-    // Route : Pembelian
-    Route::get('/pembelian/data', [PembelianController::class, 'data'])->name('pembelian.data');
-    Route::get('/pembelian/{id}/detail', [PembelianController::class, 'detail'])->name('pembelian.detail');
-    Route::resource('pembelian', PembelianController::class);
-
-    // Route : Brand
-    Route::get('/brands/data', [BrandController::class, 'data'])->name('brands.data');
-    Route::get('/brands/search', [BrandController::class, 'brandSearch'])->name('brands.search');
-    Route::resource('/brands', BrandController::class)->except('create', 'edit');
-
-    // Route : Category
-    Route::get('/category/data', [CategoryController::class, 'data'])->name('category.data');
-    Route::get('/category/search', [CategoryController::class, 'categorySearch'])->name('category.search');
-    Route::resource('/category', CategoryController::class)->except('create', 'edit');
-
-    // Route : SubCategory
-    Route::get('/subcategory/data', [SubCategoryController::class, 'data'])->name('subcategory.data');
-    Route::get('/subcategory/search/{id}', [SubCategoryController::class, 'subCategorySearch'])->name('subcategory.search');
-    Route::resource('/subcategory', SubCategoryController::class)->except('create', 'edit');
-
-    // Route : SubCategory
-    Route::get('/subsubcategory/data', [SubSubCategoryController::class, 'data'])->name('subsubcategory.data');
-    Route::get('/subsubcategory/search/{id}', [SubSubCategoryController::class, 'SubSubCategorySearch'])->name('subsubcategory.search');
-    Route::resource('/subsubcategory', SubSubCategoryController::class)->except('create', 'edit');
-
-
-    // Route : Sliders
-    Route::get('/sliders/data', [SliderController::class, 'data'])->name('sliders.data');
-    Route::resource('/sliders', SliderController::class);
-
-    // Shipping
-    Route::resource('/shipping', ShippingAreaController::class);
 });
-
-
 
 Route::get('/', [IndexController::class, 'index'])->name('home.index');
 Route::get('/user/logout', [IndexController::class, 'userLogout'])->name('user.logout');

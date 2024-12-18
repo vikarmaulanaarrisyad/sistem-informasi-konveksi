@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services\Kategori;
+namespace App\Services\CustomOrder;
 
 use LaravelEasyRepository\ServiceApi;
-use App\Repositories\Kategori\KategoriRepository;
+use App\Repositories\CustomOrder\CustomOrderRepository;
 use Illuminate\Support\Facades\Validator;
 
-class KategoriServiceImplement extends ServiceApi implements KategoriService
+class CustomOrderServiceImplement extends ServiceApi implements CustomOrderService
 {
 
     /**
@@ -25,9 +25,9 @@ class KategoriServiceImplement extends ServiceApi implements KategoriService
      * don't change $this->mainRepository variable name
      * because used in extends service class
      */
-    protected KategoriRepository $mainRepository;
+    protected CustomOrderRepository $mainRepository;
 
-    public function __construct(KategoriRepository $mainRepository)
+    public function __construct(CustomOrderRepository $mainRepository)
     {
         $this->mainRepository = $mainRepository;
     }
@@ -40,7 +40,8 @@ class KategoriServiceImplement extends ServiceApi implements KategoriService
     public function store($data)
     {
         $validator = Validator::make($data, [
-            'nama_kategori' => 'required'
+            'category_name' => 'required',
+            'category_icon' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -68,7 +69,8 @@ class KategoriServiceImplement extends ServiceApi implements KategoriService
     public function update($data, $id)
     {
         $validator = Validator::make($data, [
-            'nama_kategori' => 'required',
+            'category_name' => 'required',
+            'category_icon' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -98,8 +100,8 @@ class KategoriServiceImplement extends ServiceApi implements KategoriService
         ];
     }
 
-    public function findByName($data)
+    public function download($id)
     {
-        return $this->mainRepository->findByName($data);
+        return $this->mainRepository->download($id);
     }
 }

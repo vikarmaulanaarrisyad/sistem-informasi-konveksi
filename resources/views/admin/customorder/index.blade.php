@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Slider')
+@section('title', 'Custom Order')
 
 @section('content')
     <div class="main-content">
@@ -16,17 +16,17 @@
                 <div class="row">
                     <div class="col-12">
                         <x-card>
-                            <x-slot name="header">
-                                <button onclick="addForm(`{{ route('admin.slider.store') }}`)"
-                                    class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i> Tambah
-                                    Data</button>
-                            </x-slot>
                             <x-table>
                                 <x-slot name="thead">
                                     <th>No</th>
-                                    <th>Gambar</th>
-                                    <th>Judul</th>
-                                    <th>Deskripsi</th>
+                                    <th>Tanggal</th>
+                                    <th>Tanggal Selesai</th>
+                                    <th>Nama Lengkap</th>
+                                    <th>Nomor Hp</th>
+                                    <th>Bahan Kain</th>
+                                    <th>Size</th>
+                                    <th>Jumlah</th>
+                                    <th>Status</th>
                                     <th>Aksi</th>
                                 </x-slot>
                             </x-table>
@@ -36,7 +36,7 @@
             </div>
         </section>
     </div>
-    @include('admin.slider.form')
+    @include('admin.order.form')
 @endsection
 
 @push('scripts')
@@ -51,7 +51,7 @@
             autoWidth: false,
             responsive: true,
             ajax: {
-                url: '{{ route('admin.slider.data') }}'
+                url: '{{ route('admin.customorders.data') }}'
             },
             columns: [{
                     data: 'DT_RowIndex',
@@ -60,13 +60,28 @@
                     searchable: false
                 },
                 {
-                    data: 'slider_img'
+                    data: 'order_date'
                 },
                 {
-                    data: 'title'
+                    data: 'completion_date'
                 },
                 {
-                    data: 'description'
+                    data: 'name'
+                },
+                {
+                    data: 'phone'
+                },
+                {
+                    data: 'fabric_type'
+                },
+                {
+                    data: 'size'
+                },
+                {
+                    data: 'qty'
+                },
+                {
+                    data: 'status'
                 },
                 {
                     data: 'aksi',
@@ -77,18 +92,8 @@
             ]
         });
 
-        // fungsi tambah data baru
-        function addForm(url, title = 'Tambah Data Slider') {
-            $(modal).modal('show');
-            $(`${modal} .modal-title`).text(title);
-            $(`${modal} form`).attr('action', url);
-            $(`${modal} [name=_method]`).val('post');
-            // Hide the filename display
-            resetForm(`${modal} form`);
-        }
-
         // fungsi edit data
-        function editForm(url, title = 'Edit Data Slider') {
+        function editForm(url, title = 'Edit Data Kategori') {
             $.get(url) // Perform a GET request to the specified URL
                 .done(response => {
                     $(modal).modal('show'); // Show the modal
@@ -114,42 +119,6 @@
                         loopErrors(errors.responseJSON.errors); // Handle validation errors
                     }
                 });
-        }
-
-        // fungsi delete data
-        function deleteData(url, name) {
-            Swal.fire({
-                title: 'Hapus Data!',
-                text: 'Apakah Anda yakin ingin menghapus ' + name + '?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Ya, hapus!',
-                cancelButtonText: 'Batalkan',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        type: "DELETE",
-                        url: url,
-                        success: function(response) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil',
-                                text: response.message,
-                                timer: 2000,
-                                showConfirmButton: false,
-                            });
-                            table.ajax.reload(); // Refresh tabel
-                        },
-                        error: function(xhr) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Gagal',
-                                text: xhr.responseJSON?.message || 'Terjadi kesalahan.',
-                            });
-                        }
-                    });
-                }
-            });
         }
 
         // fungsi kirim data inputan

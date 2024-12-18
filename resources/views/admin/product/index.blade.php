@@ -17,8 +17,8 @@
                     <div class="col-12">
                         <x-card>
                             <x-slot name="header">
-                                <button onclick="addForm(`{{ route('products.store') }}`)" class="btn btn-sm btn-primary"><i
-                                        class="fas fa-plus-circle"></i> Tambah
+                                <button onclick="addForm(`{{ route('admin.products.store') }}`)"
+                                    class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i> Tambah
                                     Data</button>
                             </x-slot>
                             <x-table class="table_product">
@@ -58,7 +58,7 @@
             autoWidth: false,
             responsive: true,
             ajax: {
-                url: '{{ route('products.data') }}'
+                url: '{{ route('admin.products.data') }}'
             },
             columns: [{
                     data: 'DT_RowIndex',
@@ -110,7 +110,7 @@
                 closeOnSelect: true,
                 allowClear: true,
                 ajax: {
-                    url: '{{ route('brands.search') }}',
+                    url: '{{ route('admin.brands.brandSearch') }}',
                     dataType: 'json',
                     delay: 250,
                     processResults: function(data) {
@@ -133,7 +133,7 @@
                 closeOnSelect: true,
                 allowClear: true,
                 ajax: {
-                    url: '{{ route('category.search') }}',
+                    url: '{{ route('admin.category.categorySearch') }}',
                     dataType: 'json',
                     delay: 250,
                     processResults: function(data) {

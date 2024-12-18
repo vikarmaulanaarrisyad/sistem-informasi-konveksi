@@ -1,38 +1,34 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Slider;
-use App\Services\Slider\SliderService;
+use App\Http\Controllers\Controller;
+use App\Services\SubCategory\SubCategoryService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
-class SliderController extends Controller
+class AdminSubCategoryController extends Controller
 {
+    private $subCategoryService;
 
-    private $sliderService;
-
-    public function __construct(SliderService $sliderService)
+    public function __construct(SubCategoryService $subCategoryService)
     {
-        $this->sliderService = $sliderService;
+        $this->subCategoryService = $subCategoryService;
     }
-
 
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('admin.slider.index');
+        return view('admin.subcategory.index');
     }
 
     public function data()
     {
-        $result = $this->sliderService->getData();
+        $result = $this->subCategoryService->getData();
 
         return datatables($result)
             ->addIndexColumn()
-            ->editColumn('slider_img', fn($q) => $this->renderImageColumn($q))
             ->editColumn('aksi', fn($q) => $this->renderActionButtons($q))
             ->escapeColumns([])
             ->make(true);
@@ -43,7 +39,7 @@ class SliderController extends Controller
      */
     public function store(Request $request)
     {
-        $result = $this->sliderService->store($request->all());
+        $result = $this->subCategoryService->store($request->all());
 
         if ($result['status'] === 'success') {
             return response()->json([
@@ -64,7 +60,7 @@ class SliderController extends Controller
      */
     public function show($id)
     {
-        $result = $this->sliderService->show($id);
+        $result = $this->subCategoryService->show($id);
         return response()->json(['data' => $result]);
     }
 
@@ -73,7 +69,7 @@ class SliderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $result = $this->sliderService->update($request->all(), $id);
+        $result = $this->subCategoryService->update($request->all(), $id);
 
         if ($result['status'] === 'success') {
             return response()->json([
@@ -94,35 +90,27 @@ class SliderController extends Controller
      */
     public function destroy($id)
     {
-        $result = $this->sliderService->destroy($id);
+        $result = $this->subCategoryService->destroy($id);
 
         return response()->json([
             'message' => $result['message'],
         ]);
     }
 
+    public function subCategorySearch($id)
+    {
+        $result = $this->subCategoryService->findById($id);
+        return response()->json(['data' => $result]);
+    }
 
     /**
-     * Render action buttons for DataTables.
+     * Render aksi buttons
      */
     protected function renderActionButtons($q)
     {
         return '
-                <button onclick="editForm(`' . route('sliders.show', $q->id) . '`)" class="btn btn-xs btn-primary mr-1"><i class="fas fa-pencil-alt"></i></button>
-                <button onclick="deleteData(`' . route('sliders.destroy', $q->id) . '`, `' . $q->title . '`)" class="btn btn-xs btn-danger mr-1"><i class="fas fa-trash-alt"></i></button>
-        ';
-    }
-
-    /**
-     * Render image column for DataTables.
-     */
-    protected function renderImageColumn($q)
-    {
-        if ($q->slider_img) {
-            $imageUrl = Storage::url($q->slider_img);
-            return '<img src="' . $imageUrl . '" class="img-thumbnail" style="max-width: 100px;">';
-        }
-
-        return '<span class="text-muted">Tidak ada gambar</span>';
+                <button onclick="editForm(`' . route('admin.subcategory.show', $q->id) . '`)" class="btn btn-xs btn-primary mr-1"><i class="fas fa-pencil-alt"></i></button>
+                <button onclick="deleteData(`' . route('admin.subcategory.destroy', $q->id) . '`, `' . $q->subcategory_name . '`)" class="btn btn-xs btn-danger mr-1"><i class="fas fa-trash-alt"></i></button>
+            ';
     }
 }

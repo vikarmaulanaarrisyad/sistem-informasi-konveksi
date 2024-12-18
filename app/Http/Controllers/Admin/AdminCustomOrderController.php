@@ -3,20 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Order;
-use App\Models\OrderItem;
-use App\Services\Order\OrderService;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Carbon\Carbon;
+use App\Services\CustomOrder\CustomOrderService;
 use Illuminate\Http\Request;
 
-class AdminOrderController extends Controller
+class AdminCustomOrderController extends Controller
 {
-    private $orderService;
+    private $customOrderService;
 
-    public function __construct(OrderService $orderService)
+    public function __construct(CustomOrderService $customOrderService)
     {
-        $this->orderService = $orderService;
+        $this->customOrderService = $customOrderService;
     }
 
     /**
@@ -24,12 +20,12 @@ class AdminOrderController extends Controller
      */
     public function index()
     {
-        return view('admin.order.index');
+        return view('admin.customorder.index');
     }
 
     public function data()
     {
-        $result = $this->orderService->getData();
+        $result = $this->customOrderService->getData();
 
         return datatables($result)
             ->addIndexColumn()
@@ -44,7 +40,7 @@ class AdminOrderController extends Controller
      */
     public function show($id)
     {
-        $result = $this->orderService->show($id);
+        $result = $this->customOrderService->show($id);
         return response()->json(['data' => $result]);
     }
 
@@ -53,7 +49,7 @@ class AdminOrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $result = $this->orderService->update($request->all(), $id);
+        $result = $this->customOrderService->update($request->all(), $id);
 
         if ($result['status'] === 'success') {
             return response()->json([
@@ -74,33 +70,11 @@ class AdminOrderController extends Controller
      */
     public function destroy($id)
     {
-        $result = $this->orderService->destroy($id);
+        $result = $this->customOrderService->destroy($id);
 
         return response()->json([
             'message' => $result['message'],
         ]);
-    }
-
-    public function download($id)
-    {
-        $result  = $this->orderService->download($id);
-        $order = $result['order'];
-        $orderItem = $result['orderItems'];
-
-        // Menentukan format tanggal dan jam untuk nama file
-        $currentDateTime = Carbon::now()->format('dmY_His');
-
-        // Membuat nama file dengan menambahkan tanggal dan waktu
-        $fileName = 'invoice_' . $currentDateTime . '.pdf';
-
-        // Membuat PDF dan mengunduh dengan nama file yang dinamis
-        $pdf = Pdf::loadView('admin.order.download', compact('order', 'orderItem'))->setPaper('a4')->setOption([
-            'tempDir' => public_path(),
-            'chroot' => public_path(),
-            'isRemoteEnabled' => true
-        ]);
-
-        return $pdf->download($fileName);
     }
 
     /**

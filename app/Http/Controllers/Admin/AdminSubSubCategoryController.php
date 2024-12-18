@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Kategori;
-use App\Services\Kategori\KategoriService;
+use App\Http\Controllers\Controller;
+use App\Services\SubSubCategory\SubSubCategoryService;
 use Illuminate\Http\Request;
 
-class KategoriController extends Controller
+class AdminSubSubCategoryController extends Controller
 {
-    private $kategoriService;
+    private $subSubCategoryService;
 
-    public function __construct(KategoriService $kategoriService)
+    public function __construct(SubSubCategoryService $subSubCategoryService)
     {
-        $this->kategoriService = $kategoriService;
+        $this->subSubCategoryService = $subSubCategoryService;
     }
 
     /**
@@ -20,21 +20,16 @@ class KategoriController extends Controller
      */
     public function index()
     {
-        return view('admin.kategori.index');
+        return view('admin.subsubcategory.index');
     }
 
     public function data()
     {
-        $result = $this->kategoriService->getData();
+        $result = $this->subSubCategoryService->getData();
 
         return datatables($result)
             ->addIndexColumn()
-            ->editColumn('aksi', function ($q) {
-                return '
-                <button onclick="editForm(`' . route('kategori.show', $q->id) . '`)" class="btn btn-xs btn-primary mr-1"><i class="fas fa-pencil-alt"></i></button>
-                <button onclick="deleteData(`' . route('kategori.destroy', $q->id) . '`, `' . $q->nama_jasa . '`)" class="btn btn-xs btn-danger mr-1"><i class="fas fa-trash-alt"></i></button>
-                ';
-            })
+            ->editColumn('aksi', fn($q) => $this->renderActionButtons($q))
             ->escapeColumns([])
             ->make(true);
     }
@@ -44,7 +39,7 @@ class KategoriController extends Controller
      */
     public function store(Request $request)
     {
-        $result = $this->kategoriService->store($request->all());
+        $result = $this->subSubCategoryService->store($request->all());
 
         if ($result['status'] === 'success') {
             return response()->json([
@@ -65,7 +60,7 @@ class KategoriController extends Controller
      */
     public function show($id)
     {
-        $result = $this->kategoriService->show($id);
+        $result = $this->subSubCategoryService->show($id);
         return response()->json(['data' => $result]);
     }
 
@@ -74,7 +69,7 @@ class KategoriController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $result = $this->kategoriService->update($request->all(), $id);
+        $result = $this->subSubCategoryService->update($request->all(), $id);
 
         if ($result['status'] === 'success') {
             return response()->json([
@@ -95,19 +90,27 @@ class KategoriController extends Controller
      */
     public function destroy($id)
     {
-        $result = $this->kategoriService->destroy($id);
+        $result = $this->subSubCategoryService->destroy($id);
 
         return response()->json([
             'message' => $result['message'],
         ]);
     }
 
-    public function search(Request $request)
+    public function subSubCategorySearch($id)
     {
-        $searchTerm = $request->input('nama_kategori');
+        $result = $this->subSubCategoryService->findById($id);
+        return response()->json(['data' => $result]);
+    }
 
-        $result = $this->kategoriService->findByName($searchTerm);
-
-        return response()->json($result);
+    /**
+     * Render aksi buttons
+     */
+    protected function renderActionButtons($q)
+    {
+        return '
+                <button onclick="editForm(`' . route('admin.subsubcategory.show', $q->id) . '`)" class="btn btn-xs btn-primary mr-1"><i class="fas fa-pencil-alt"></i></button>
+                <button onclick="deleteData(`' . route('admin.subsubcategory.destroy', $q->id) . '`, `' . $q->subsubcategory_name . '`)" class="btn btn-xs btn-danger mr-1"><i class="fas fa-trash-alt"></i></button>
+            ';
     }
 }
