@@ -7,9 +7,8 @@
         <div class="container">
             <div class="breadcrumb-inner">
                 <ul class="list-inline list-unstyled">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Clothing</a></li>
-                    <li class='active'>Floral Print Buttoned</li>
+                    <li><a href="{{ url('/') }}">Home</a></li>
+                    <li class='active'>{{ $product->product_name }}</li>
                 </ul>
             </div><!-- /.breadcrumb-inner -->
         </div><!-- /.container -->
@@ -21,35 +20,10 @@
             <div class='row single-product'>
                 <div class='col-md-3 sidebar'>
                     <div class="sidebar-module-container">
-                        <div class="home-banner outer-top-n">
-                            <img src="{{ asset('/frontend') }}/assets/images/banners/LHS-banner.jpg" alt="Image">
-                        </div>
 
                         <!-- ============================================== HOT DEALS ============================================== -->
                         @include('frontend.common.hotdeals_product')
                         <!-- ============================================== HOT DEALS: END ============================================== -->
-
-                        <!-- ============================================== NEWSLETTER ============================================== -->
-                        <div class="sidebar-widget newsletter wow fadeInUp outer-bottom-small outer-top-vs">
-                            <h3 class="section-title">Newsletters</h3>
-                            <div class="sidebar-widget-body outer-top-xs">
-                                <p>Sign Up for Our Newsletter!</p>
-                                <form>
-                                    <div class="form-group">
-                                        <label class="sr-only" for="exampleInputEmail1">Email address</label>
-                                        <input type="email" class="form-control" id="exampleInputEmail1"
-                                            placeholder="Subscribe to our newsletter">
-                                    </div>
-                                    <button class="btn btn-primary">Subscribe</button>
-                                </form>
-                            </div><!-- /.sidebar-widget-body -->
-                        </div><!-- /.sidebar-widget -->
-                        <!-- ============================================== NEWSLETTER: END ============================================== -->
-
-                        <!-- ============================================== Testimonials============================================== -->
-                        @include('frontend.common.testimonial')
-
-                        <!-- ============================================== Testimonials: END ============================================== -->
 
                     </div>
                 </div><!-- /.sidebar -->
@@ -134,25 +108,11 @@
                                             </div>
 
                                             <div class="col-sm-6">
-                                                <div class="favorite-button m-t-10">
-                                                    <a class="btn btn-primary" data-toggle="tooltip" data-placement="right"
-                                                        title="Wishlist" href="#">
-                                                        <i class="fa fa-heart"></i>
-                                                    </a>
-                                                    <a class="btn btn-primary" data-toggle="tooltip" data-placement="right"
-                                                        title="Add to Compare" href="#">
-                                                        <i class="fa fa-signal"></i>
-                                                    </a>
-                                                    <a class="btn btn-primary" data-toggle="tooltip" data-placement="right"
-                                                        title="E-mail" href="#">
-                                                        <i class="fa fa-envelope"></i>
-                                                    </a>
-                                                </div>
+
                                             </div>
 
                                         </div><!-- /.row -->
                                     </div><!-- /.price-container -->
-
 
 
                                     <div class="price-container info-container m-t-20">
@@ -206,8 +166,7 @@
                                                             <div class="arrow minus gradient"><span class="ir"><i
                                                                         class="icon fa fa-sort-desc"></i></span></div>
                                                         </div>
-                                                        <input type="text" value="1" id="qty"
-                                                            min="1">
+                                                        <input type="text" value="1" id="qty" min="1">
                                                     </div>
                                                 </div>
                                             </div>
@@ -343,9 +302,6 @@
                                     </div><!-- /.products -->
                                 </div><!-- /.item -->
                             @endif
-
-
-
 
                         </div><!-- /.home-owl-carousel -->
                     </section><!-- /.section -->

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Slider')
+@section('title', 'Custom Order')
 
 @section('content')
     <div class="main-content">
@@ -16,17 +16,18 @@
                 <div class="row">
                     <div class="col-12">
                         <x-card>
-                            <x-slot name="header">
-                                <button onclick="addForm(`{{ route('admin.slider.store') }}`)"
-                                    class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i> Tambah
-                                    Data</button>
-                            </x-slot>
                             <x-table>
                                 <x-slot name="thead">
                                     <th>No</th>
-                                    <th>Gambar</th>
-                                    <th>Judul</th>
-                                    <th>Deskripsi</th>
+                                    <th>Tanggal</th>
+                                    <th>Nama Lengkap</th>
+                                    <th>Nomor Hp</th>
+                                    <th>Bahan Kain</th>
+                                    <th>Size</th>
+                                    <th>Jumlah</th>
+                                    <th>Harga</th>
+                                    <th>Subtotal</th>
+                                    <th>Status</th>
                                     <th>Aksi</th>
                                 </x-slot>
                             </x-table>
@@ -36,13 +37,15 @@
             </div>
         </section>
     </div>
-    @include('admin.slider.form')
+    @include('admin.customorder.form')
+    @include('admin.customorder.detail')
 @endsection
 
 @push('scripts')
     <script>
         let table;
         let modal = '#modal-form';
+        let modalDetail = '#modalDetail'
         let button = '#submitBtn';
 
         table = $('.table').DataTable({
@@ -51,7 +54,7 @@
             autoWidth: false,
             responsive: true,
             ajax: {
-                url: '{{ route('admin.slider.data') }}'
+                url: '{{ route('admin.customorders.data') }}'
             },
             columns: [{
                     data: 'DT_RowIndex',
@@ -60,13 +63,31 @@
                     searchable: false
                 },
                 {
-                    data: 'slider_img'
+                    data: 'order_date'
                 },
                 {
-                    data: 'title'
+                    data: 'name'
                 },
                 {
-                    data: 'description'
+                    data: 'user.numberphone'
+                },
+                {
+                    data: 'fabric_type'
+                },
+                {
+                    data: 'size'
+                },
+                {
+                    data: 'qty'
+                },
+                {
+                    data: 'price'
+                },
+                {
+                    data: 'total_price'
+                },
+                {
+                    data: 'status'
                 },
                 {
                     data: 'aksi',
@@ -77,18 +98,8 @@
             ]
         });
 
-        // fungsi tambah data baru
-        function addForm(url, title = 'Tambah Data Slider') {
-            $(modal).modal('show');
-            $(`${modal} .modal-title`).text(title);
-            $(`${modal} form`).attr('action', url);
-            $(`${modal} [name=_method]`).val('post');
-            // Hide the filename display
-            resetForm(`${modal} form`);
-        }
-
-        // fungsi edit data
-        function editForm(url, title = 'Edit Data Slider') {
+        // fungsi update Status
+        function updateStatus(url, title = 'Update Data') {
             $.get(url) // Perform a GET request to the specified URL
                 .done(response => {
                     $(modal).modal('show'); // Show the modal
@@ -116,40 +127,50 @@
                 });
         }
 
-        // fungsi delete data
-        function deleteData(url, name) {
-            Swal.fire({
-                title: 'Hapus Data!',
-                text: 'Apakah Anda yakin ingin menghapus ' + name + '?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Ya, hapus!',
-                cancelButtonText: 'Batalkan',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        type: "DELETE",
-                        url: url,
-                        success: function(response) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil',
-                                text: response.message,
-                                timer: 2000,
-                                showConfirmButton: false,
-                            });
-                            table.ajax.reload(); // Refresh tabel
-                        },
-                        error: function(xhr) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Gagal',
-                                text: xhr.responseJSON?.message || 'Terjadi kesalahan.',
-                            });
-                        }
+        // fungsi detail
+        function detailData(url, title = 'Detail Data') {
+            $.get(url) // Perform a GET request to the specified URL
+                .done(response => {
+                    $(modalDetail).modal('show'); // Show the modal
+                    $(`${modalDetail} .modal-title`).text(title); // Set the modal title
+                    $(`${modalDetail} form`).attr('action', url); // Set the form action to the URL
+                    $(`${modalDetail} [name=_method]`).val('put'); // Set the HTTP method to PUT
+
+                    resetForm(`${modalDetail} form`); // Reset the form fields
+                    loopForm(response.data); // Populate the form fields with the response data
+
+                    // Populate modal fields with response data
+                    $('#name').val(response.data.name);
+                    $('#file_design').val(response.data.file_design);
+                    $('#design_description').val(response.data.design_description);
+                    $('#fabric_type').val(response.data.fabric_type);
+                    $('#size').val(response.data.size);
+                    $('#total_price').val(response.data.total_price);
+                    $('#dp_paid').val(response.data.dp_paid);
+                    $('#remaining_payment').val(response.data.remaining_payment);
+                    $('#order_date').val(response.data.order_date);
+                    $('#completion_date').val(response.data.completion_date);
+                    $('[name=status]').val(response.data.status);
+
+                    // Display the file design as an image
+                    const fileDesignPath = `/storage/${response.data.file_design}`; // Adjust the path accordingly
+                    $('#file_design').html(`<img src="${fileDesignPath}" class="img-fluid" alt="Desain">`);
+                })
+                .fail(errors => { // Handle any errors from the GET request
+                    $('#spinner-border').hide(); // Hide the spinner
+                    $(button).prop('disabled', false); // Enable the button
+                    Swal.fire({ // Show an error message
+                        icon: 'error',
+                        title: 'Oops! Gagal',
+                        text: errors.responseJSON.message,
+                        showConfirmButton: true,
                     });
-                }
-            });
+                    if (errors.status == 422) {
+                        $('#spinner-border').hide();
+                        $(button).prop('disabled', false);
+                        loopErrors(errors.responseJSON.errors); // Handle validation errors
+                    }
+                });
         }
 
         // fungsi kirim data inputan
@@ -203,5 +224,47 @@
                     }
                 });
         }
+
+        function downlodDesain(url) {
+            alert(url)
+            window.location.href = url;
+        }
     </script>
+
+    {{--  <script>
+        function showStatusModal(orderId) {
+            // Set order ID ke dalam input hidden
+            $('#orderId').val(orderId);
+
+            // Tampilkan modal
+            $('#statusModal').modal('show');
+        }
+
+        $(document).ready(function() {
+            $('#saveStatusButton').on('click', function() {
+                let orderId = $('#orderId').val();
+                let status = $('#status').val();
+                let price = $('#price').val();
+
+                $.ajax({
+                    url: `/admin/customorders/${orderId}`, // Pastikan route sesuai
+                    type: 'PUT',
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content'),
+                        status: status,
+                        price: price
+                    },
+                    success: function(response) {
+                        alert(response.message);
+                        $('#statusModal').modal('hide');
+                        // Reload datatable
+                        $('#customOrderTable').DataTable().ajax.reload();
+                    },
+                    error: function(xhr) {
+                        alert('Terjadi kesalahan: ' + xhr.responseJSON.message);
+                    }
+                });
+            });
+        });
+    </script>  --}}
 @endpush

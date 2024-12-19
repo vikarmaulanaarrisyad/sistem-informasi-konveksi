@@ -17,7 +17,7 @@
                     <div class="col-12">
                         <x-card>
                             <x-slot name="header">
-                                <button onclick="addForm(`{{ route('subsubcategory.store') }}`)"
+                                <button onclick="addForm(`{{ route('admin.subsubcategory.store') }}`)"
                                     class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i> Tambah
                                     Data</button>
                             </x-slot>
@@ -54,7 +54,7 @@
                 closeOnSelect: true,
                 allowClear: true,
                 ajax: {
-                    url: '{{ route('category.search') }}',
+                    url: '{{ route('admin.category.categorySearch') }}',
                     dataType: 'json',
                     delay: 250,
                     processResults: function(data) {
@@ -128,7 +128,7 @@
             autoWidth: false,
             responsive: true,
             ajax: {
-                url: '{{ route('subsubcategory.data') }}'
+                url: '{{ route('admin.subsubcategory.data') }}'
             },
             columns: [{
                     data: 'DT_RowIndex',

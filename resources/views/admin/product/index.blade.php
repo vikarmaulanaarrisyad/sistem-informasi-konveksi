@@ -17,8 +17,8 @@
                     <div class="col-12">
                         <x-card>
                             <x-slot name="header">
-                                <button onclick="addForm(`{{ route('products.store') }}`)" class="btn btn-sm btn-primary"><i
-                                        class="fas fa-plus-circle"></i> Tambah
+                                <button onclick="addForm(`{{ route('admin.products.store') }}`)"
+                                    class="btn btn-sm btn-primary"><i class="fas fa-plus-circle"></i> Tambah
                                     Data</button>
                             </x-slot>
                             <x-table class="table_product">
@@ -29,6 +29,8 @@
                                     <th>Nama Produk</th>
                                     <th>Stok</th>
                                     <th>Harga</th>
+                                    <th>Diskon</th>
+                                    <th>Harga Diskon</th>
                                     <th>Status</th>
                                     <th>Aksi</th>
                                 </x-slot>
@@ -50,6 +52,54 @@
         let modal = '#modal-form';
         let button = '#submitBtn';
 
+        table = $('.table_product').DataTable({
+            processing: true,
+            serverSide: true,
+            autoWidth: false,
+            responsive: true,
+            ajax: {
+                url: '{{ route('admin.products.data') }}'
+            },
+            columns: [{
+                    data: 'DT_RowIndex',
+                    name: 'DT_RowIndex',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'product_thumbnail'
+                },
+                {
+                    data: 'product_code'
+                },
+                {
+                    data: 'product_name'
+                },
+                {
+                    data: 'product_qty'
+                },
+                {
+                    data: 'selling_price'
+                },
+                {
+                    data: 'discount_price'
+                },
+                {
+                    data: 'price_after_discount'
+                },
+                {
+                    data: 'status'
+                },
+                {
+                    data: 'aksi',
+                    name: 'aksi',
+                    orderable: false,
+                    searchable: false
+                },
+            ]
+        });
+
+
         $(function() {
             $('body').addClass('sidebar-collapse sidebar-mini');
 
@@ -60,7 +110,7 @@
                 closeOnSelect: true,
                 allowClear: true,
                 ajax: {
-                    url: '{{ route('brands.search') }}',
+                    url: '{{ route('admin.brands.brandSearch') }}',
                     dataType: 'json',
                     delay: 250,
                     processResults: function(data) {
@@ -83,7 +133,7 @@
                 closeOnSelect: true,
                 allowClear: true,
                 ajax: {
-                    url: '{{ route('category.search') }}',
+                    url: '{{ route('admin.category.categorySearch') }}',
                     dataType: 'json',
                     delay: 250,
                     processResults: function(data) {
@@ -200,47 +250,6 @@
                     $('.subsubcategory_id').val(null).trigger('change').prop('disabled', true);
                 }
             });
-        });
-
-        table = $('.table_product').DataTable({
-            processing: true,
-            serverSide: true,
-            autoWidth: false,
-            responsive: true,
-            ajax: {
-                url: '{{ route('products.data') }}'
-            },
-            columns: [{
-                    data: 'DT_RowIndex',
-                    name: 'DT_RowIndex',
-                    orderable: false,
-                    searchable: false
-                },
-                {
-                    data: 'product_thumbnail'
-                },
-                {
-                    data: 'product_code'
-                },
-                {
-                    data: 'product_name'
-                },
-                {
-                    data: 'product_qty'
-                },
-                {
-                    data: 'selling_price'
-                },
-                {
-                    data: 'status'
-                },
-                {
-                    data: 'aksi',
-                    name: 'aksi',
-                    orderable: false,
-                    searchable: false
-                },
-            ]
         });
 
         // fungsi tambah data baru
@@ -528,15 +537,12 @@
 
     <script>
         function calculateDiscountPrice() {
-            var sellingPrice = parseFloat(document.getElementById('selling_price').value.replace(/\./g, '').replace(',',
-                '.')) || 0;
-
-            var discountPercentage = document.getElementById('discount_price').value || 0;
-            // Calculate the discount amount
-            var discountAmount = (sellingPrice * discountPercentage) / 100;
+            const sellingPrice = $('[name="selling_price"]').val().replace(/\./g, '');
+            const discountPercentage = $('[name="discount_price"]').val();
+            const discountAmount = (sellingPrice * discountPercentage) / 100;
 
             // Calculate the price after discount
-            var priceAfterDiscount = sellingPrice - discountAmount;
+            const priceAfterDiscount = sellingPrice - discountAmount;
 
             // Format the result and display it
             document.getElementById('price_after_discount').value = formatCurrency(priceAfterDiscount);

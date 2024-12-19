@@ -17,7 +17,7 @@
                     <div class="col-12">
                         <x-card>
                             <x-slot name="header">
-                                <button onclick="addForm(`{{ route('category.store') }}`)" class="btn btn-sm btn-primary"><i
+                                <button onclick="addForm(`{{ route('admin.category.store') }}`)" class="btn btn-sm btn-primary"><i
                                         class="fas fa-plus-circle"></i> Tambah
                                     Data</button>
                             </x-slot>
@@ -51,7 +51,7 @@
             autoWidth: false,
             responsive: true,
             ajax: {
-                url: '{{ route('category.data') }}'
+                url: '{{ route('admin.category.data') }}'
             },
             columns: [{
                     data: 'DT_RowIndex',

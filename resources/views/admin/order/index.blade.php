@@ -1,27 +1,30 @@
 @extends('layouts.app')
 
-@section('title', 'Data Kategori')
+@section('title', 'List Orders')
 
 @section('content')
     <div class="main-content">
         <section class="section">
             <div class="section-header">
                 <h1>@yield('title')</h1>
+                <div class="section-header-breadcrumb">
+                    <div class="breadcrumb-item active"><a href="{{ route('dashboard') }}">Dashboard</a></div>
+                    <div class="breadcrumb-item">@yield('title')</div>
+                </div>
             </div>
             <div class="section-body">
                 <div class="row">
                     <div class="col-12">
                         <x-card>
-                            <x-slot name="header">
-                                <button onclick="addForm(`{{ route('kategori.store') }}`)" class="btn btn-sm btn-primary"><i
-                                        class="fas fa-plus-circle"></i> Tambah
-                                    Data</button>
-                            </x-slot>
                             <x-table>
                                 <x-slot name="thead">
                                     <th>No</th>
-                                    <th>Nama Kategori</th>
-                                    <th>slug</th>
+                                    <th>Tanggal</th>
+                                    <th>Invoice</th>
+                                    <th>Nama Lengkap</th>
+                                    <th>Email</th>
+                                    <th>Nomor Hp</th>
+                                    <th>Status</th>
                                     <th>Aksi</th>
                                 </x-slot>
                             </x-table>
@@ -31,7 +34,7 @@
             </div>
         </section>
     </div>
-    @include('admin.kategori.form')
+    @include('admin.order.form')
 @endsection
 
 @push('scripts')
@@ -46,7 +49,7 @@
             autoWidth: false,
             responsive: true,
             ajax: {
-                url: '{{ route('kategori.data') }}'
+                url: '{{ route('admin.orders.data') }}'
             },
             columns: [{
                     data: 'DT_RowIndex',
@@ -55,10 +58,22 @@
                     searchable: false
                 },
                 {
-                    data: 'nama_kategori'
+                    data: 'order_date'
                 },
                 {
-                    data: 'slug'
+                    data: 'invoice_no'
+                },
+                {
+                    data: 'name'
+                },
+                {
+                    data: 'email'
+                },
+                {
+                    data: 'phone'
+                },
+                {
+                    data: 'status'
                 },
                 {
                     data: 'aksi',
@@ -68,16 +83,6 @@
                 },
             ]
         });
-
-        // fungsi tambah data baru
-        function addForm(url, title = 'Tambah Data Kategori') {
-            $(modal).modal('show');
-            $(`${modal} .modal-title`).text(title);
-            $(`${modal} form`).attr('action', url);
-            $(`${modal} [name=_method]`).val('post');
-            // Hide the filename display
-            resetForm(`${modal} form`);
-        }
 
         // fungsi edit data
         function editForm(url, title = 'Edit Data Kategori') {
@@ -106,42 +111,6 @@
                         loopErrors(errors.responseJSON.errors); // Handle validation errors
                     }
                 });
-        }
-
-        // fungsi delete data
-        function deleteData(url, name) {
-            Swal.fire({
-                title: 'Hapus Data!',
-                text: 'Apakah Anda yakin ingin menghapus ' + name + '?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Ya, hapus!',
-                cancelButtonText: 'Batalkan',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        type: "DELETE",
-                        url: url,
-                        success: function(response) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil',
-                                text: response.message,
-                                timer: 2000,
-                                showConfirmButton: false,
-                            });
-                            table.ajax.reload(); // Refresh tabel
-                        },
-                        error: function(xhr) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Gagal',
-                                text: xhr.responseJSON?.message || 'Terjadi kesalahan.',
-                            });
-                        }
-                    });
-                }
-            });
         }
 
         // fungsi kirim data inputan

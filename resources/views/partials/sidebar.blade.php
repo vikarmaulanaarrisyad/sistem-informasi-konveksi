@@ -12,11 +12,12 @@
                 <a href="{{ route('dashboard') }}" class="nav-link"><i class="fas fa-fire"></i><span>Dashboard</span></a>
             </li>
             <li>
-                <a href="{{ route('layanan.index') }}" class="nav-link"><i class="fas fa-concierge-bell"></i><span>Data
+                <a href="{{ route('admin.layanan.index') }}" class="nav-link"><i
+                        class="fas fa-concierge-bell"></i><span>Data
                         Layanan</span></a>
             </li>
             <li>
-                <a href="{{ route('brands.index') }}" class="nav-link"><i class="fas fa-tags"></i><span>Data
+                <a href="{{ route('admin.brands.index') }}" class="nav-link"><i class="fas fa-tags"></i><span>Data
                         Brand</span></a>
             </li>
             <li class="menu-header">Data Master</li>
@@ -24,16 +25,17 @@
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-th-list"></i>
                     <span>Manajemen Kategori</span></a>
                 <ul class="dropdown-menu">
-                    <li><a class="nav-link" href="{{ route('category.index') }}">Kategori</a></li>
-                    <li><a class="nav-link" href="{{ route('subcategory.index') }}">Sub Kategori</a></li>
-                    <li><a class="nav-link" href="{{ route('subsubcategory.index') }}">Sub Sub Kategori</a></li>
+                    <li><a class="nav-link" href="{{ route('admin.category.index') }}">Kategori</a></li>
+                    <li><a class="nav-link" href="{{ route('admin.subcategory.index') }}">Sub Kategori</a></li>
+                    <li><a class="nav-link" href="{{ route('admin.subsubcategory.index') }}">Sub Sub Kategori</a></li>
                 </ul>
             </li>
 
-            <li><a class="nav-link" href="{{ route('products.index') }}"><i class="fas fa-box"></i> <span>Manajemen
+            <li><a class="nav-link" href="{{ route('admin.products.index') }}"><i class="fas fa-box"></i>
+                    <span>Manajemen
                         Produk</span></a></li>
             <li>
-                <a class="nav-link" href="{{ route('sliders.index') }}"><i class="fas fa-box"></i> <span>Manajemen
+                <a class="nav-link" href="{{ route('admin.slider.index') }}"><i class="fas fa-box"></i> <span>Manajemen
                         Slider</span>
                 </a>
             </li>
@@ -41,10 +43,10 @@
             <li class="dropdown">
                 <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i
                         class="fas fa-shopping-cart"></i>
-                    <span>Pesanan</span></a>
+                    <span>Manajemen Order</span></a>
                 <ul class="dropdown-menu">
-                    <li><a class="nav-link" href="{{ route('pesanan.index') }}">Custom Pesanan</a></li>
-                    <li><a class="nav-link" href="{{ route('pembelian.index') }}">Pesanan</a></li>
+                    <li><a class="nav-link" href="{{ route('admin.customorders.index') }}">Custom Order</a></li>
+                    <li><a class="nav-link" href="{{ route('admin.orders.index') }}">Order</a></li>
                 </ul>
             </li>
 

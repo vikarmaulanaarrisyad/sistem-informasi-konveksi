@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services\Produk;
+namespace App\Services\Order;
 
 use LaravelEasyRepository\ServiceApi;
+use App\Repositories\Order\OrderRepository;
 use Illuminate\Support\Facades\Validator;
-use App\Repositories\Produk\ProdukRepository;
 
-class ProdukServiceImplement extends ServiceApi implements ProdukService
+class OrderServiceImplement extends ServiceApi implements OrderService
 {
 
     /**
@@ -25,12 +25,13 @@ class ProdukServiceImplement extends ServiceApi implements ProdukService
      * don't change $this->mainRepository variable name
      * because used in extends service class
      */
-    protected ProdukRepository $mainRepository;
+    protected OrderRepository $mainRepository;
 
-    public function __construct(ProdukRepository $mainRepository)
+    public function __construct(OrderRepository $mainRepository)
     {
         $this->mainRepository = $mainRepository;
     }
+
     public function getData()
     {
         return $this->mainRepository->getData();
@@ -39,13 +40,8 @@ class ProdukServiceImplement extends ServiceApi implements ProdukService
     public function store($data)
     {
         $validator = Validator::make($data, [
-            'nama_produk'    => 'required|string',
-            'kategori'       => 'required|string',
-            'keterangan'     => 'nullable|string',
-            'foto_produk'    => 'nullable|file|image|max:2048', // Validasi file gambar
-            'size.*'         => 'required|string',             // Validasi setiap item dalam array size
-            'harga_produk.*' => 'required|numeric|min:0',      // Validasi setiap item dalam array harga
-            'quantity.*'     => 'required|integer|min:1',      // Validasi setiap item dalam array quantity
+            'category_name' => 'required',
+            'category_icon' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -73,14 +69,10 @@ class ProdukServiceImplement extends ServiceApi implements ProdukService
     public function update($data, $id)
     {
         $validator = Validator::make($data, [
-            'nama_produk'    => 'required|string',
-            'kategori'       => 'required|string',
-            'keterangan'     => 'nullable|string',
-            'foto_produk'    => 'nullable|file|image|max:2048', // Validasi file gambar
-            'size.*'         => 'required|string',             // Validasi setiap item dalam array size
-            'harga_produk.*' => 'required|numeric|min:0',      // Validasi setiap item dalam array harga
-            'quantity.*'     => 'required|integer|min:1',      // Validasi setiap item dalam array quantity
+            'category_name' => 'required',
+            'category_icon' => 'required',
         ]);
+
         if ($validator->fails()) {
             return [
                 'status'  => 'error',
@@ -104,7 +96,12 @@ class ProdukServiceImplement extends ServiceApi implements ProdukService
 
         return [
             'status'  => 'success',
-            'message' => 'Data berhasil diperbarui.',
+            'message' => 'Data berhasil dihapus.',
         ];
+    }
+
+    public function download($id)
+    {
+        return $this->mainRepository->download($id);
     }
 }

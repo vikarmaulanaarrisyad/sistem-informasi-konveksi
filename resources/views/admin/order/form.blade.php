@@ -8,8 +8,17 @@
     <div class="row">
         <div class="col-md-12 col-12">
             <div class="form-group">
-                <label for="nama_kategori">Nama Kategori</label>
-                <input type="text" class="form-control" name="nama_kategori" id="nama_kategori" autocomplete="off">
+                <label for="category_name">Nama kategori</label>
+                <input type="text" class="form-control" name="category_name" id="category_name" autocomplete="off">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 col-12">
+            <div class="form-group">
+                <label for="category_icon">Icon Kategori</label>
+                <input type="text" class="form-control" name="category_icon" id="category_icon" autocomplete="off"
+                    placeholder="fas fa-users">
             </div>
         </div>
     </div>

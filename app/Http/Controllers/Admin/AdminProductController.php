@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use App\Models\Product;
+use App\Http\Controllers\Controller;
 use App\Services\Product\ProductService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-class ProductController extends Controller
+class AdminProductController extends Controller
 {
     private $productService;
 
@@ -118,13 +118,13 @@ class ProductController extends Controller
     protected function renderActionButtons($q)
     {
         return '
-        <button onclick="editForm(`' . route('products.show', $q->id) . '`)" class="btn btn-xs btn-primary mr-1">
+        <button onclick="editForm(`' . route('admin.products.show', $q->id) . '`)" class="btn btn-xs btn-primary mr-1">
             <i class="fas fa-pencil-alt"></i>
         </button>
-        <button onclick="detailForm(`' . route('products.detail', $q->id) . '`)" class="btn btn-xs btn-info">
+        <button onclick="detailForm(`' . route('admin.products.detail', $q->id) . '`)" class="btn btn-xs btn-info">
             <i class="fas fa-info-circle"></i>
         </button>
-        <button onclick="deleteData(`' . route('products.destroy', $q->id) . '`, `' . $q->product_name . '`)" class="btn btn-xs btn-danger mr-1">
+        <button onclick="deleteData(`' . route('admin.products.destroy', $q->id) . '`, `' . $q->product_name . '`)" class="btn btn-xs btn-danger mr-1">
             <i class="fas fa-trash-alt"></i>
         </button>
     ';

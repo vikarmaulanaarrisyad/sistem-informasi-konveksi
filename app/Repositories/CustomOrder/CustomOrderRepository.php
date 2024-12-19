@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Services\Produk;
+namespace App\Repositories\CustomOrder;
 
-use LaravelEasyRepository\BaseService;
+use LaravelEasyRepository\Repository;
 
-interface ProdukService extends BaseService
+interface CustomOrderRepository extends Repository
 {
     public function getData();
     public function store($data);
     public function show($id);
     public function update($data, $id);
     public function destroy($id);
+    public function download($id);
 }
