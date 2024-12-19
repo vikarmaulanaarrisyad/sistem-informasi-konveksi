@@ -40,7 +40,7 @@ class CustomOrderServiceImplement extends ServiceApi implements CustomOrderServi
     public function store($data)
     {
         $validator = Validator::make($data, [
-            'category_name' => 'required',
+            'price' => 'required',
             'category_icon' => 'required',
         ]);
 
@@ -69,8 +69,7 @@ class CustomOrderServiceImplement extends ServiceApi implements CustomOrderServi
     public function update($data, $id)
     {
         $validator = Validator::make($data, [
-            'category_name' => 'required',
-            'category_icon' => 'required',
+            'price' => 'required',
         ]);
 
         if ($validator->fails()) {

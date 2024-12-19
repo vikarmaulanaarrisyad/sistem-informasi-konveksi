@@ -8,17 +8,21 @@
     <div class="row">
         <div class="col-md-12 col-12">
             <div class="form-group">
-                <label for="category_name">Nama kategori</label>
-                <input type="text" class="form-control" name="category_name" id="category_name" autocomplete="off">
+                <label for="status">Harga</label>
+                <input type="text" name="price" id="price" class="form-control" onkeyup="format_uang(this)">
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12 col-12">
             <div class="form-group">
-                <label for="category_icon">Icon Kategori</label>
-                <input type="text" class="form-control" name="category_icon" id="category_icon" autocomplete="off"
-                    placeholder="fas fa-users">
+                <label for="status">Status</label>
+                <select id="status" name="status" class="form-control">
+                    <option value="Pending">Pending</option>
+                    <option value="Progress">Progress</option>
+                    <option value="Success">Success</option>
+                    <option value="Canceled">Canceled</option>
+                </select>
             </div>
         </div>
     </div>

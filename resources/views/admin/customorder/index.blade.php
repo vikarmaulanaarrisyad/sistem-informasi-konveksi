@@ -20,12 +20,13 @@
                                 <x-slot name="thead">
                                     <th>No</th>
                                     <th>Tanggal</th>
-                                    <th>Tanggal Selesai</th>
                                     <th>Nama Lengkap</th>
                                     <th>Nomor Hp</th>
                                     <th>Bahan Kain</th>
                                     <th>Size</th>
                                     <th>Jumlah</th>
+                                    <th>Harga</th>
+                                    <th>Subtotal</th>
                                     <th>Status</th>
                                     <th>Aksi</th>
                                 </x-slot>
@@ -36,13 +37,15 @@
             </div>
         </section>
     </div>
-    @include('admin.order.form')
+    @include('admin.customorder.form')
+    @include('admin.customorder.detail')
 @endsection
 
 @push('scripts')
     <script>
         let table;
         let modal = '#modal-form';
+        let modalDetail = '#modalDetail'
         let button = '#submitBtn';
 
         table = $('.table').DataTable({
@@ -63,13 +66,10 @@
                     data: 'order_date'
                 },
                 {
-                    data: 'completion_date'
-                },
-                {
                     data: 'name'
                 },
                 {
-                    data: 'phone'
+                    data: 'user.numberphone'
                 },
                 {
                     data: 'fabric_type'
@@ -79,6 +79,12 @@
                 },
                 {
                     data: 'qty'
+                },
+                {
+                    data: 'price'
+                },
+                {
+                    data: 'total_price'
                 },
                 {
                     data: 'status'
@@ -92,8 +98,8 @@
             ]
         });
 
-        // fungsi edit data
-        function editForm(url, title = 'Edit Data Kategori') {
+        // fungsi update Status
+        function updateStatus(url, title = 'Update Data') {
             $.get(url) // Perform a GET request to the specified URL
                 .done(response => {
                     $(modal).modal('show'); // Show the modal
@@ -103,6 +109,52 @@
 
                     resetForm(`${modal} form`); // Reset the form fields
                     loopForm(response.data); // Populate the form fields with the response data
+                })
+                .fail(errors => { // Handle any errors from the GET request
+                    $('#spinner-border').hide(); // Hide the spinner
+                    $(button).prop('disabled', false); // Enable the button
+                    Swal.fire({ // Show an error message
+                        icon: 'error',
+                        title: 'Oops! Gagal',
+                        text: errors.responseJSON.message,
+                        showConfirmButton: true,
+                    });
+                    if (errors.status == 422) {
+                        $('#spinner-border').hide();
+                        $(button).prop('disabled', false);
+                        loopErrors(errors.responseJSON.errors); // Handle validation errors
+                    }
+                });
+        }
+
+        // fungsi detail
+        function detailData(url, title = 'Detail Data') {
+            $.get(url) // Perform a GET request to the specified URL
+                .done(response => {
+                    $(modalDetail).modal('show'); // Show the modal
+                    $(`${modalDetail} .modal-title`).text(title); // Set the modal title
+                    $(`${modalDetail} form`).attr('action', url); // Set the form action to the URL
+                    $(`${modalDetail} [name=_method]`).val('put'); // Set the HTTP method to PUT
+
+                    resetForm(`${modalDetail} form`); // Reset the form fields
+                    loopForm(response.data); // Populate the form fields with the response data
+
+                    // Populate modal fields with response data
+                    $('#name').val(response.data.name);
+                    $('#file_design').val(response.data.file_design);
+                    $('#design_description').val(response.data.design_description);
+                    $('#fabric_type').val(response.data.fabric_type);
+                    $('#size').val(response.data.size);
+                    $('#total_price').val(response.data.total_price);
+                    $('#dp_paid').val(response.data.dp_paid);
+                    $('#remaining_payment').val(response.data.remaining_payment);
+                    $('#order_date').val(response.data.order_date);
+                    $('#completion_date').val(response.data.completion_date);
+                    $('[name=status]').val(response.data.status);
+
+                    // Display the file design as an image
+                    const fileDesignPath = `/storage/${response.data.file_design}`; // Adjust the path accordingly
+                    $('#file_design').html(`<img src="${fileDesignPath}" class="img-fluid" alt="Desain">`);
                 })
                 .fail(errors => { // Handle any errors from the GET request
                     $('#spinner-border').hide(); // Hide the spinner
@@ -172,5 +224,47 @@
                     }
                 });
         }
+
+        function downlodDesain(url) {
+            alert(url)
+            window.location.href = url;
+        }
     </script>
+
+    {{--  <script>
+        function showStatusModal(orderId) {
+            // Set order ID ke dalam input hidden
+            $('#orderId').val(orderId);
+
+            // Tampilkan modal
+            $('#statusModal').modal('show');
+        }
+
+        $(document).ready(function() {
+            $('#saveStatusButton').on('click', function() {
+                let orderId = $('#orderId').val();
+                let status = $('#status').val();
+                let price = $('#price').val();
+
+                $.ajax({
+                    url: `/admin/customorders/${orderId}`, // Pastikan route sesuai
+                    type: 'PUT',
+                    data: {
+                        _token: $('meta[name="csrf-token"]').attr('content'),
+                        status: status,
+                        price: price
+                    },
+                    success: function(response) {
+                        alert(response.message);
+                        $('#statusModal').modal('hide');
+                        // Reload datatable
+                        $('#customOrderTable').DataTable().ajax.reload();
+                    },
+                    error: function(xhr) {
+                        alert('Terjadi kesalahan: ' + xhr.responseJSON.message);
+                    }
+                });
+            });
+        });
+    </script>  --}}
 @endpush

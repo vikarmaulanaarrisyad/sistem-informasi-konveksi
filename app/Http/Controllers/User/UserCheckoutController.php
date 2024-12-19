@@ -172,6 +172,6 @@ class UserCheckoutController extends Controller
             'alert-type' => 'success',
         ];
 
-        return redirect()->route('dashboard')->with($notification);
+        return redirect()->url('/user/my-order')->with($notification);
     }
 }

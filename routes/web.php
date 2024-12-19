@@ -26,6 +26,7 @@ use App\Http\Controllers\Admin\{
 };
 use App\Http\Controllers\User\CartPageController;
 use App\Http\Controllers\User\UserCheckoutController;
+use App\Http\Controllers\User\UserCustomOrderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -145,7 +146,20 @@ Route::group(['middleware' => ['auth']], function () {
                 Route::delete('/{id}', 'destroy')->name('destroy');
                 Route::get('/detail/{id}', 'detail')->name('detail');
                 Route::get('/invoice/{id}/download', 'download')->name('download');
+                Route::get('/download-design/{id}', 'downloadDesign')->name('download.design');
             });
+        });
+    });
+
+    // Role User
+    Route::group(['middleware' => ['role:user']], function () {
+        // Route : User Custome Order
+        Route::controller(UserCustomOrderController::class)->prefix('user')->as('user.')->group(function () {
+            Route::get('/custom-order', 'index')->name('customorder');
+            Route::get('/custom-order/history', 'history')->name('customorder.history');
+            Route::post('/custom-order', 'store')->name('customorder.store');
+            Route::post('/custom-order/payment', 'customeOrderStore')->name('customorder.payment');
+            Route::get('/custom-order/{id}/detail', 'detail')->name('customorder.detail');
         });
     });
 });

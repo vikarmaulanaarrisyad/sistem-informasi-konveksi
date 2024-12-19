@@ -13,6 +13,13 @@
                             <li><a href="{{ route('user.order') }}"><i class="icon fa fa-shopping-cart"></i>History
                                     Order</a>
                             </li>
+                            <li><a href="{{ route('user.customorder') }}"><i class="icon fa fa-shopping-cart"></i>Custom
+                                    Order</a>
+                            </li>
+                            <li><a href="{{ route('user.customorder.history') }}"><i
+                                        class="icon fa fa-shopping-cart"></i>History Custom
+                                    Order</a>
+                            </li>
 
                             @auth
                                 <li><a href="{{ route('dashboard') }}"><i class="icon fa fa-user"></i>User Profile</a></li>

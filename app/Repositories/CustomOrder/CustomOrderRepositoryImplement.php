@@ -22,7 +22,7 @@ class CustomOrderRepositoryImplement extends Eloquent implements CustomOrderRepo
 
     public function getData()
     {
-        return $this->model->all();
+        return $this->model->with('user');
     }
 
     public function store($data)
@@ -32,13 +32,21 @@ class CustomOrderRepositoryImplement extends Eloquent implements CustomOrderRepo
 
     public function show($id)
     {
-        return $this->model->find($id);
+        $query =  $this->model->find($id);
+        $query['price'] = format_uang($query['price']);
+
+        return $query;
     }
 
     public function update($data, $id)
     {
         $query = $this->model->find($id);
+        $data['status'] = 'Progress';
+        $price = str_replace('.', '', $data['price']);
 
+        $data['price'] =  $price;
+        $data['total_price'] = $query->qty * $price;
+        $data['completion_date'] = now()->addWeeks(1);
         return $query->update($data);
     }
 

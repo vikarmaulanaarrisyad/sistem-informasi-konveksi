@@ -8,4 +8,9 @@ class CustomOrder extends Model
 {
     use HasFactory;
     protected $table = 'custom_orders';
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
