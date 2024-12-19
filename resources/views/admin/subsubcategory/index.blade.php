@@ -83,13 +83,13 @@
                     url: function() {
                         let categoryId = $('.category_id').val(); // Get selected category
                         return categoryId ?
-                            `{{ url('subcategory/search') }}/${categoryId}` :
+                            `{{ url('admin/subcategory') }}/${categoryId}/search` :
                             ''; // Adjust route as per your application
                     },
                     dataType: 'json',
                     delay: 250,
                     processResults: function(response) {
-                        console.log("Received response:", response);
+                        console.log(response);
                         if (!Array.isArray(response.data)) {
                             console.error("Expected an array in response.data but got:", response);
                             return {

@@ -84,7 +84,7 @@ Route::group(['middleware' => ['auth']], function () {
             // Route : SubCategory
             Route::controller(AdminSubCategoryController::class)->prefix('subcategory')->as('subcategory.')->group(function () {
                 Route::get('/data', 'data')->name('data');
-                Route::get('/search', 'subCategorySearch')->name('subCategorySearch');
+                Route::get('/{id}/search', 'subCategorySearch')->name('subCategorySearch');
                 Route::get('/', 'index')->name('index');
                 Route::post('/', 'store')->name('store');
                 Route::get('/{id}', 'show')->name('show');
